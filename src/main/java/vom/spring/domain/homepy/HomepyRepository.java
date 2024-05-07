@@ -14,7 +14,7 @@ public class HomepyRepository {
         em.persist(homepy);
     }
 
-//    public Homepy findByUser(User user) {
-//        return em.find(Homepy.class, user);
-//    }
+    public Homepy findByUser(User user) {
+        return em.find(Homepy.class, user);
+    }
 }
