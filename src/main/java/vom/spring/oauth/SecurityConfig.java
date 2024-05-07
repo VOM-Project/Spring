@@ -24,7 +24,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 //request 인증, 인가 설정
                 .authorizeRequests(request -> request.requestMatchers(
-                        new AntPathRequestMatcher("/", "/oauth2/**")
+                        new AntPathRequestMatcher("/", "/oauth2/**"),
+                        new AntPathRequestMatcher("/swagger-ui/**","/v3/api-docs/**")
                 ).permitAll() //로그인은 다 접근 가능
                          .anyRequest().authenticated()) //그외엔 다 인증 필요
                 //oauth2 기반 인증 설정
