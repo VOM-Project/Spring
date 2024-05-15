@@ -40,6 +40,10 @@ public class Album {
         return name;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }

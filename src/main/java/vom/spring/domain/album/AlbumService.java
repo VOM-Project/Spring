@@ -13,6 +13,7 @@ import vom.spring.domain.homepy.HomepyRepository;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +66,14 @@ public class AlbumService {
         amazonS3Client.deleteObject(bucket, albumName);
         // DB에서 사진 삭제 날짜 변경
         album.setDeletedAt(LocalDateTime.now());
+    }
+
+    /**
+     * 사진 조회
+     */
+    @Transactional
+    public AlbumDTO.Info getAlbum(Long albumId) {
+        return AlbumDTO.Info.of(albumRepository.findById(albumId));
     }
 
 }
