@@ -13,6 +13,10 @@ public class AlbumRepository {
         em.persist(album);
     }
 
+    public Album findById(Integer id) {
+        return em.find(Album.class, id);
+    }
+
 //    public Homepy findByHomepy(Integer homepyId) {
 //        return em.find(Homepy.class, homepyId);
 //    }

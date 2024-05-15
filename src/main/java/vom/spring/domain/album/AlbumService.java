@@ -21,8 +21,14 @@ public class AlbumService {
         this.albumRepository = albumRepository;
     }
 
+    @Autowired
+    public void setS3Client(AmazonS3Client amazonS3Client) {
+        this.amazonS3Client = amazonS3Client;
+    }
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
 
     /**
      * 사진 등록
@@ -39,9 +45,24 @@ public class AlbumService {
 
         albumRepository.save(
                 Album.builder()
-                        .image_url(amazonS3Client.getUrl(bucket, originalFilename).toString())
+                        .name(originalFilename)
+                        .img_url(amazonS3Client.getUrl(bucket, originalFilename).toString())
                         .createdAt(LocalDateTime.now())
                         .build()
         );
     }
+
+    /**
+     * 사진 삭제
+     */
+    @Transactional
+    public void deleteFile(Integer albumId) {
+        Album album = albumRepository.findById(albumId);
+        String albumName = album.getName();
+        // S3버킷에서 객체(파일) 삭제
+        amazonS3Client.deleteObject(bucket, albumName);
+        // DB에서 사진 삭제 날짜 변경
+        album.setDeletedAt(LocalDateTime.now());
+    }
+
 }
