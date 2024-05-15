@@ -20,17 +20,20 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @PostMapping(value = "/api/album")
+    @PostMapping(value = "/api/album/{member-id}/new")
     public ResponseEntity<HttpStatus> uploadAlbum(
+            @PathVariable("member-id") Long memberId,
             @RequestParam("file") MultipartFile multipartFile
     ) throws IOException {
-        albumService.uploadAlbum(multipartFile);
+        // member-id 로 homepy-id 찾아야함
+        albumService.uploadAlbum(memberId, multipartFile);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value="/api/album/{albumId}/delete")
+    @DeleteMapping(value="/api/album/{member-id}/{album-id}/delete")
     public ResponseEntity<HttpStatus> deleteAlbum(
-            @PathVariable("albumId") Integer albumId
+            @PathVariable("member-id") Long memberId,
+            @PathVariable("album-id") Long albumId
     ) {
         albumService.deleteFile(albumId);
         return new ResponseEntity<>(HttpStatus.OK);

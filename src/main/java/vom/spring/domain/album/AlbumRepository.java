@@ -13,7 +13,7 @@ public class AlbumRepository {
         em.persist(album);
     }
 
-    public Album findById(Integer id) {
+    public Album findById(Long id) {
         return em.find(Album.class, id);
     }
 
