@@ -1,4 +1,4 @@
-package vom.spring;
+package vom.spring.global;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
