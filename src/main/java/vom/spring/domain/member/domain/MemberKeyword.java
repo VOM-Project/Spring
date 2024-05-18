@@ -1,4 +1,4 @@
-package vom.spring.member.domain;
+package vom.spring.domain.member.domain;
 
 import jakarta.persistence.*;
 

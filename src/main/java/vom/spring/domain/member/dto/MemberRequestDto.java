@@ -1,4 +1,4 @@
-package vom.spring.member.dto;
+package vom.spring.domain.member.dto;
 
 import lombok.Builder;
 import lombok.Getter;

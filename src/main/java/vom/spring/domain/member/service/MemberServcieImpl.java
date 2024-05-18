@@ -1,18 +1,14 @@
-package vom.spring.member.service;
+package vom.spring.domain.member.service;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import vom.spring.member.domain.Member;
-import vom.spring.member.domain.Region;
-import vom.spring.member.repository.MemberRepository;
-import vom.spring.member.dto.MemberRequestDto;
-import vom.spring.member.dto.MemberResponseDto;
-import vom.spring.member.repository.RegionRepository;
+import vom.spring.domain.member.domain.Member;
+import vom.spring.domain.member.domain.Region;
+import vom.spring.domain.member.dto.MemberRequestDto;
+import vom.spring.domain.member.dto.MemberResponseDto;
+import vom.spring.domain.member.repository.MemberRepository;
+import vom.spring.domain.member.repository.RegionRepository;
 
 @Service
 @RequiredArgsConstructor
