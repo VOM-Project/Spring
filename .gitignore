@@ -36,3 +36,6 @@ application.yml
 
 ### VS Code ###
 .vscode/
+
+### yml file ###
+src/main/**/application.yml
