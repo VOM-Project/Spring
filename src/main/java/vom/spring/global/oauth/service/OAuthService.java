@@ -11,8 +11,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import vom.spring.global.oauth.dto.LoginRequest;
 import vom.spring.global.oauth.dto.LoginResponse;
-import vom.spring.member.domain.Member;
-import vom.spring.member.repository.MemberRepository;
+import vom.spring.domain.member.domain.Member;
+import vom.spring.domain.member.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor

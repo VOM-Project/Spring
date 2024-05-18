@@ -1,7 +1,7 @@
-package vom.spring.member.service;
+package vom.spring.domain.member.service;
 
-import vom.spring.member.dto.MemberRequestDto;
-import vom.spring.member.dto.MemberResponseDto;
+import vom.spring.domain.member.dto.MemberRequestDto;
+import vom.spring.domain.member.dto.MemberResponseDto;
 
 public interface MemberService {
     MemberResponseDto.CreateDto create(MemberRequestDto.CreateMemberDto request);

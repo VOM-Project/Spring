@@ -1,20 +1,18 @@
-package vom.spring.member.controller;
+package vom.spring.domain.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import vom.spring.member.service.MemberService;
-import vom.spring.member.dto.MemberRequestDto;
-import vom.spring.member.dto.MemberResponseDto;
+import vom.spring.domain.member.dto.MemberRequestDto;
+import vom.spring.domain.member.dto.MemberResponseDto;
+import vom.spring.domain.member.service.MemberService;
 
 @Tag(name = "유저 API", description = "유저 API 명세서")
 @RestController

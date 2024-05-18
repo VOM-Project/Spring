@@ -1,7 +1,7 @@
-package vom.spring.member.repository;
+package vom.spring.domain.member.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import vom.spring.member.domain.Member;
+import vom.spring.domain.member.domain.Member;
 
 import java.util.Optional;
 
