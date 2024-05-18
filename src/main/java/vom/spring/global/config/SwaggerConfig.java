@@ -1,4 +1,4 @@
-package vom.spring.config;
+package vom.spring.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public GroupedOpenApi chatOpenApi() {
-        String[] paths = {"/api/**"};
+        String[] paths = {"/**"};
         return GroupedOpenApi.builder()
                 .group("VOM API v1")
                 .pathsToMatch(paths)
