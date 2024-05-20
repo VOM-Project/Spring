@@ -8,6 +8,7 @@ import vom.spring.domain.homepy.Homepy;
 import vom.spring.domain.member.domain.Member;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -20,14 +21,14 @@ public class Touchpoint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "from_member_id")
-    private Member from_member;
+    @JoinColumn(referencedColumnName = "id", name = "from_member_id", nullable = false)
+    private Member fromMember;
 
     @ManyToOne
-    @JoinColumn(name = "to_member_id")
-    private Member to_member;
+    @JoinColumn(referencedColumnName = "id", name = "to_member_id", nullable = false)
+    private Member toMember;
 }

@@ -17,7 +17,7 @@ public class TouchpointController {
 
     private TouchpointService touchpointService;
     @Autowired
-    public TouchpointController(Touchpoint touchpoint) {
+    public TouchpointController(TouchpointService touchpointService) {
         this.touchpointService = touchpointService;
     }
 
@@ -29,7 +29,7 @@ public class TouchpointController {
     }
 
     @PostMapping(value = "/api/touchpoint/{to-member-id}")
-    public ResponseEntity<HttpStatus> sentTouchpoint(
+    public ResponseEntity<HttpStatus> sendTouchpoint(
             @PathVariable("to-member-id") Long to_member_id,
             @RequestParam Long from_member_id
     ) {
