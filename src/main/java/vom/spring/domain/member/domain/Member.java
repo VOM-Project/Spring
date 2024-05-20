@@ -3,8 +3,11 @@ package vom.spring.domain.member.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import vom.spring.domain.touchpoint.Touchpoint;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Builder

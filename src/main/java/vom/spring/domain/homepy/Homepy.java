@@ -1,12 +1,10 @@
 package vom.spring.domain.homepy;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import vom.spring.domain.member.domain.Member;
 
 @Builder
 @NoArgsConstructor
@@ -16,7 +14,12 @@ public class Homepy {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String greeting;
+
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public String getGreeting() {
         return greeting;
