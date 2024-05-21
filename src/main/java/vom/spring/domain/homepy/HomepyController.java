@@ -14,6 +14,13 @@ public class HomepyController {
         this.homepyService = homepyService;
     }
 
+    @GetMapping(value = "/api/homepy/{member-id}/profile")
+    public ResponseEntity<?> getProfile(
+            @PathVariable("member-id") Long memberId
+    ) {
+        return new ResponseEntity<>(homepyService.getProfile(memberId), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/api/homepy/{member-id}/greeting")
     public ResponseEntity<String> getGreeting(
             @PathVariable("member-id") Long memberId
