@@ -25,15 +25,15 @@ public class HomepyService {
      * 프로필 조회
      */
     @Transactional
-    public HomepyResponseDto.CreateProfileDto getProfile(Long memberId) {
+    public HomepyResponseDto.ProfileDto getProfile(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
-        return HomepyResponseDto.CreateProfileDto.builder()
+        return HomepyResponseDto.ProfileDto.builder()
                 .profileImgUrl(member.getProfileImgUrl())
                 .nickname(member.getNickname())
                 .vomVomCount(member.getVomVomCount())
                 .email(member.getEmail())
                 .birth(member.getBirth())
-                .region(member.getRegion())
+                .region(member.getRegion().getName())
                 .build();
     }
 
@@ -41,8 +41,8 @@ public class HomepyService {
      * 인사말 조회
      */
     @Transactional
-    public String getGreeting(Long homepyId) {
-        Homepy homepy = homepyRepository.findById(homepyId);
+    public String getGreeting(Long memberId) {
+        Homepy homepy = homepyRepository.findByMember_id(memberId);
         return homepy.getGreeting();
     }
 
@@ -50,8 +50,8 @@ public class HomepyService {
      * 인사말 변경
      */
     @Transactional
-    public void setGreeting(Long homepyId, String greeting) {
-        Homepy homepy = homepyRepository.findById(homepyId);
+    public void setGreeting(Long memberId, String greeting) {
+        Homepy homepy = homepyRepository.findByMember_id(memberId);
         homepy.setGreeting(greeting);
     }
 

@@ -10,12 +10,12 @@ public class HomepyResponseDto {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CreateProfileDto {
+    public static class ProfileDto {
         private String profileImgUrl;
         private String nickname;
         private Integer vomVomCount;
         private String email;
         private LocalDate birth;
-        private Region region;
+        private String region;
     }
 }
