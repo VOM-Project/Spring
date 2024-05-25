@@ -24,14 +24,14 @@ public class HomepyController {
 
     // 인사말 조회
     @GetMapping(value = "/api/homepy/{member-id}/greeting")
-    public ResponseEntity<String> getGreeting(
+    public ResponseEntity<?> getGreeting(
             @PathVariable("member-id") Long memberId
     ) {
         return new ResponseEntity<>(homepyService.getGreeting(memberId), HttpStatus.OK);
     }
 
     // 인사말 변경
-    @PutMapping (value = "/api/homepy/{member-id}/greeting")
+    @PostMapping(value = "/api/homepy/{member-id}/greeting")
     public ResponseEntity<HttpStatus> setGreeting(
             @PathVariable("member-id") Long memberId,
             @RequestParam String greeting

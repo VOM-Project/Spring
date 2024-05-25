@@ -41,9 +41,11 @@ public class HomepyService {
      * 인사말 조회
      */
     @Transactional
-    public String getGreeting(Long memberId) {
+    public HomepyResponseDto.GreetingDto getGreeting(Long memberId) {
         Homepy homepy = homepyRepository.findByMember_id(memberId);
-        return homepy.getGreeting();
+        return HomepyResponseDto.GreetingDto.builder()
+                .greeting(homepy.getGreeting())
+                .build();
     }
 
     /**
