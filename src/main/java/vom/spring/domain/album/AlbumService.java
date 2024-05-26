@@ -10,16 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import vom.spring.domain.homepy.Homepy;
 import vom.spring.domain.homepy.HomepyRepository;
+import vom.spring.domain.member.domain.Member;
+import vom.spring.domain.member.repository.MemberRepository;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final HomepyRepository homepyRepository;
+    private final MemberRepository memberRepository;
     private AmazonS3Client amazonS3Client;
 
     @Autowired
@@ -35,8 +39,8 @@ public class AlbumService {
      * 사진 등록
      */
     @Transactional
-    public void uploadAlbum(Long homepyId, MultipartFile multipartFile) throws IOException {
-        Homepy homepy = homepyRepository.findById(homepyId);
+    public void uploadAlbum(Long memberId, MultipartFile multipartFile) throws IOException {
+        Homepy homepy = homepyRepository.findByMember_id(memberId);
         String originalFilename = multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -72,8 +76,9 @@ public class AlbumService {
      * 사진 조회
      */
     @Transactional
-    public AlbumDTO.Info getAlbum(Long albumId) {
-        return AlbumDTO.Info.of(albumRepository.findById(albumId));
+    public List<AlbumDto.Info> getAlbum(Long memberId) {
+        Homepy homepy = homepyRepository.findByMember_id(memberId);
+        return albumRepository.findByHomepy_id(homepy.getId()).stream().map(AlbumDto.Info::of).collect(Collectors.toList());
     }
 
 }
