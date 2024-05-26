@@ -3,9 +3,11 @@ package vom.spring.domain.homepy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import vom.spring.domain.member.domain.Member;
 
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

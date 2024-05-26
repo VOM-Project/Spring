@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 import vom.spring.domain.homepy.Homepy;
 
+import java.util.List;
+
 @Repository
 public class AlbumRepository {
     @PersistenceContext
@@ -15,6 +17,12 @@ public class AlbumRepository {
 
     public Album findById(Long id) {
         return em.find(Album.class, id);
+    }
+
+    public List<Album> findByHomepy_id(Long homepy_id) {
+        return em.createQuery("select a from Album a where a.homepy.id = :homepy_id and a.deletedAt is null", Album.class)
+                .setParameter("homepy_id", homepy_id)
+                .getResultList();
     }
 
 //    public Homepy findByHomepy(Integer homepyId) {

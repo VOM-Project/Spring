@@ -3,6 +3,7 @@ package vom.spring.domain.album;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import vom.spring.domain.homepy.Homepy;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
