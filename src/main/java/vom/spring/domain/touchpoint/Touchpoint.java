@@ -3,6 +3,7 @@ package vom.spring.domain.touchpoint;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import vom.spring.domain.homepy.Homepy;
 import vom.spring.domain.member.domain.Member;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static jakarta.persistence.FetchType.LAZY;
 
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

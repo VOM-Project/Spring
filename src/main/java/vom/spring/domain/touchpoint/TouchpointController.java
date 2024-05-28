@@ -22,7 +22,7 @@ public class TouchpointController {
     }
 
     @GetMapping(value = "/api/touchpoint/{member-id}")
-    public ResponseEntity<List<Touchpoint>> getTouchpoints(
+    public ResponseEntity<List<TouchpointDto>> getTouchpoints(
             @PathVariable("member-id") Long memberId
     ) {
         return new ResponseEntity<>(touchpointService.getTouchpoints(memberId), HttpStatus.OK);

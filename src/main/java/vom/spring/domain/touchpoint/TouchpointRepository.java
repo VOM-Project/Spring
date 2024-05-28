@@ -13,6 +13,21 @@ import vom.spring.domain.member.domain.Member;
 import java.util.List;
 
 @Repository
-public interface TouchpointRepository extends JpaRepository<Touchpoint, Long> {
-    List<Touchpoint> findByToMember_Id(Long to_member_id);
+public class TouchpointRepository {
+
+    @PersistenceContext
+    private EntityManager em;
+
+    public void save(Touchpoint touchpoint) {
+        em.persist(touchpoint);
+    }
+
+    public List<TouchpointDto> findFromMemberIdsByToMemberId(Long toMemberId) {
+        return em.createQuery(
+                        "select new TouchpointDto(t.fromMember.id) from Touchpoint t where t.toMember.id = :toMemberId",
+                        TouchpointDto.class)
+                .setParameter("toMemberId", toMemberId)
+                .getResultList();
+    }
+
 }

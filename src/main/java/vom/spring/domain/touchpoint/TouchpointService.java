@@ -25,9 +25,9 @@ public class TouchpointService {
      * 터치포인트 조회
      */
     @Transactional
-    public List<Touchpoint> getTouchpoints(Long member_id) {
+    public List<TouchpointDto> getTouchpoints(Long member_id) {
 //        Member member = memberRepository.findById(member_id).get();
-        return touchpointRepository.findByToMember_Id(member_id);
+        return touchpointRepository.findFromMemberIdsByToMemberId(member_id);
     }
 
     /**
@@ -36,14 +36,14 @@ public class TouchpointService {
     @Transactional
     public void sendTouchpoint(Long from_member_id, Long to_member_id) {
 
-        Member from_member = memberRepository.findById(from_member_id).get();
-        Member to_member = memberRepository.findById(to_member_id).get();
+        Member fromMember = memberRepository.findById(from_member_id).get();
+        Member toMember = memberRepository.findById(to_member_id).get();
 
         touchpointRepository.save(
                 Touchpoint.builder()
                         .createdAt(LocalDateTime.now())
-                        .fromMember(from_member)
-                        .toMember(to_member)
+                        .fromMember(fromMember)
+                        .toMember(toMember)
                         .build()
         );
     }
