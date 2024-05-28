@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import vom.spring.global.jwt.JwtTokenProvider;
 import vom.spring.global.oauth.dto.LoginRequest;
 import vom.spring.global.oauth.dto.LoginResponse;
 import vom.spring.domain.member.domain.Member;
@@ -20,6 +21,7 @@ public class OAuthService {
     private final Environment env;
     private final RestTemplate restTemplate = new RestTemplate();
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
     @Transactional
     public LoginResponse socialLogin(String code, String registrationId) {
         //로그인 시도
@@ -75,22 +77,26 @@ public class OAuthService {
         //회원가입이 되어있지 않은경우
         if(!isRegistered) {
             Member newMember = new Member(email);
+            String token = issueToken(newMember);
             return LoginResponse.builder()
                     .isRegistered(false)
                     .memberId(newMember.getId())
+                    .accessToken(token)
                     .build();
         }
         //회원가입이 되어있는 경우
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Not Exist User"));
+        String token = issueToken(member);
         return LoginResponse.builder()
                 .isRegistered(true)
                 .memberId(member.getId())
+                .accessToken(token)
                 .build();
 //        System.out.println("id = " + id);
 //        System.out.println("email = " + email);
 //        System.out.println("nickname = " + nickname);
     }
-    //access token 발급
+    //google access token 발급
     private String getAccessToken(String authorizationCode, String registrationId) {
         String clientId = env.getProperty("oauth2." + registrationId + ".client-id");
         String clientSecret = env.getProperty("oauth2." + registrationId + ".client-secret");
@@ -121,4 +127,19 @@ public class OAuthService {
         HttpEntity entity = new HttpEntity(headers);
         return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
     }
+
+    /**
+     * vom access token 발급
+     */
+    private String issueToken(Member member) {
+        String accessToken = jwtTokenProvider.createAccessToken(member.getId(), member.getEmail());
+        return accessToken;
+    }
+    /**
+     * access token 갱신 추가
+     */
+
+    /**
+     * 사용자 탈퇴 추가
+     */
 }

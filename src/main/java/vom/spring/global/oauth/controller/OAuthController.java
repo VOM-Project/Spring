@@ -39,8 +39,4 @@ public class OAuthController {
         LoginResponse loginResponse = oauthService.socialLogin(code, registrationId);
         return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
     }
-
-    /**
-     * 로그아웃
-     */
 }

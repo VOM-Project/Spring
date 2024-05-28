@@ -55,6 +55,9 @@ public class JwtInterceptor implements HandlerInterceptor {
         return HttpMethod.OPTIONS.matches(request.getMethod());
     }
 
+    /**
+     * Security ContextHolder에 인증 정보 담아두기
+     */
     public void setAuthentication(String accessToken) {
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
