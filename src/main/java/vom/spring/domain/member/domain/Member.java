@@ -29,6 +29,8 @@ public class Member {
     @JoinColumn(name = "region_id")
     private Region region;
     private String profileImgUrl;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private Integer vomVomCount; //수정 필요
 
     public void updateNicknameAndEmailAndProfileImg(String nickname, String email, String profileImgUrl) {
