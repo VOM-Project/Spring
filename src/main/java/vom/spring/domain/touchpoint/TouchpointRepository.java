@@ -24,7 +24,8 @@ public class TouchpointRepository {
 
     public List<TouchpointDto> findFromMemberIdsByToMemberId(Long toMemberId) {
         return em.createQuery(
-                        "select new TouchpointDto(t.fromMember.id) from Touchpoint t where t.toMember.id = :toMemberId",
+                        "select new TouchpointDto(t.fromMember.id, t.createdAt, t.fromMember.profileImgUrl) " +
+                                "from Touchpoint t where t.toMember.id = :toMemberId",
                         TouchpointDto.class)
                 .setParameter("toMemberId", toMemberId)
                 .getResultList();

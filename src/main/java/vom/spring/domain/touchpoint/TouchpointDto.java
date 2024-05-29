@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 
 public class TouchpointDto {
     private Long fromMemberId;
+    private LocalDateTime createdAt;
+    private String fromMemberProfileImgUrl;
 
-    public TouchpointDto(Long fromMemberId) {
+    public TouchpointDto(Long fromMemberId, LocalDateTime createdAt, String fromMemberProfileImgUrl) {
         this.fromMemberId = fromMemberId;
+        this.createdAt = createdAt;
+        this.fromMemberProfileImgUrl = fromMemberProfileImgUrl;
     }
 
     public Long getFromMemberId() {
@@ -22,5 +26,21 @@ public class TouchpointDto {
 
     public void setFromMemberId(Long fromMemberId) {
         this.fromMemberId = fromMemberId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getFromMemberProfileImgUrl() {
+        return fromMemberProfileImgUrl;
+    }
+
+    public void setFromMemberProfileImgUrl(String fromMemberProfileUrl) {
+        this.fromMemberProfileImgUrl = fromMemberProfileUrl;
     }
 }
