@@ -12,7 +12,6 @@ import lombok.*;
 public class MemberKeyword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_keyword_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
