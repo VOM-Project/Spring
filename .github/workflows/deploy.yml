@@ -20,7 +20,7 @@ env:
   S3_BUCKET_NAME: vom-gihub-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: vom-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: vom-codedeploy-deployment-group
-  # working-directory: ./VOM_Spring  # 이 코드는 제 프로젝트 경로를 맞춰주기 위해 적어주었습니다. 필요하시면 적으세요 !
+  # working-directory: ./VOM_Spring  # 이 코드는 제 프로젝트 경로를 맞춰주기 위해 적어주었습니다. 필요하시면 적으세요!
   RESOURCE_PATH: ./src/main/resources/application-dev.yml
 permissions:
   contents: read
@@ -44,6 +44,7 @@ jobs:
         distribution: 'temurin' 
     # 2-1) Set yml file
     - name : Set yml file
+      uses: microsoft/variable-substitution@v1
       with:
         files: ${{ env.RESOURCE_PATH }} 
       env: 
