@@ -20,7 +20,7 @@ configurations {
 repositories {
 	mavenCentral()
 }
-//-plain.jar이 생성되지 않도록 설정
+//plain.jar이 생성되지 않도록 설정
 jar {
 	enabled = false
 }

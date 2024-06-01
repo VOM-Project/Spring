@@ -39,6 +39,3 @@ application.yml
 
 ### yml file ###
 src/main/**/application-local.yml
-
-# 배포 관련 수정
-appspec.yml

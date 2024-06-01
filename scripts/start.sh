@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROJECT_ROOT="/home/ubuntu/app"
-JAR_FILE="$PROJECT_ROOT/VOM_Spring.jar"
+JAR_FILE="$PROJECT_ROOT/VOM_Spring.jar" #일단 원하는 프로젝트 이름으로 설정
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
