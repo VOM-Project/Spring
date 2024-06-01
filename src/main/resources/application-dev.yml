@@ -9,9 +9,9 @@ spring:
       max-request-size: 20MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${url}
-    username: ${rds_username}
-    password: ${rds_password}
+    url: ${URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
 
   jpa:
     hibernate:
@@ -24,7 +24,7 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: ${bucket}
+      bucket: ${BUCKET}
     region:
       static: ap-northeast-2
     stack:
@@ -34,11 +34,11 @@ cloud:
 
 oauth2:
   google:
-    client-id:  ${client_id}
-    client-secret: ${client_secret}
-    redirect-uri: ${redirect_uri}
-    token-uri: ${token_uri}
-    resource-uri: ${resource_uri}
+    client-id:  ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+    redirect-uri: ${REDIRECT_URI}
+    token-uri: ${TOKEN_URI}
+    resource-uri: ${RESOURCE_URI}
 
 #swagger
 springdoc:
@@ -58,5 +58,5 @@ springdoc:
     - /**
 
 jwt :
-  secret: ${jwt_secret}
+  secret: ${JWT_SECRET}
   expiration_time: 2592000 #30일
