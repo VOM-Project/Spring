@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
         String memberNickname;
         if (!isExistedNickname(request.getNickname())) {
             memberNickname = request.getNickname();
-        } else {
+        } else { //isExisted가 true이면
             throw new IllegalArgumentException("중복된 닉네임입니다");
         }
         Region region = regionRepository.findByName(request.getRegion()).orElseThrow(() -> new IllegalArgumentException("region not found with name" + request.getRegion()));
@@ -67,7 +67,9 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
-    //닉네임 검증
+    /**
+     * 닉네임 검증
+     */
     @Override
     public MemberResponseDto.VerifyNicknameDto verifyNickname(MemberRequestDto.VerfyNicknameDto reqeust) {
         boolean isExisted = memberRepository.existsByNickname(reqeust.getNickname());
@@ -100,7 +102,9 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
-    //닉네임 검색
+    /**
+     * 닉네임 검색
+     */
     @Override
     public MemberResponseDto.GetMemberDto searchNickname(String nickname) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName(); //현재 접속 유저 정보 가져오기
