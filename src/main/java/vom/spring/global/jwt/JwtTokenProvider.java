@@ -10,19 +10,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.Date;
 
 @Component
-@RequiredArgsConstructor
 public class JwtTokenProvider {
-    @Value("${jwt.secret}")
-    private String secretKey;
+    private final String secretKey;
     @Value("${jwt.expiration_time}")
     private Long accessTokenValidTime;
     private final CustomUserDetailsService customUserDetailsService;
     private static final String access_header = "Authorization";
 
     //secret key base64 인코딩
+    private JwtTokenProvider(@Value("${jwt.secret}") String secretKey, CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
     public String createAccessToken(Long userId, String email) {
         Date now = new Date();
         return Jwts.builder()

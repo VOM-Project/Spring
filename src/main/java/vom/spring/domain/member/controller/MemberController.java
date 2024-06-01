@@ -53,7 +53,6 @@ public class MemberController {
         MemberResponseDto.VerifyNicknameDto response = memberService.verifyNickname(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
     /**
      * 닉네임 변경 - 마이페이지
      */
@@ -76,7 +75,7 @@ public class MemberController {
     @Operation(summary = "닉네임 검색", description = "닉네임 검색을 합니다",
             responses = {
                     @ApiResponse(responseCode = "200", description = "닉네임 검색 완료"),
-                    @ApiResponse(responseCode = "403", description = "중복된 닉네임입니다",
+                    @ApiResponse(responseCode = "404", description = "존재하지 않은 닉네임입니다",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             })
     @GetMapping("/search")
@@ -90,8 +89,8 @@ public class MemberController {
      */
     @Operation(summary = "프로필 사진 변경", description = "프로필 사진 변경을 합니다",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "닉네임 검색 완료"),
-                    @ApiResponse(responseCode = "403", description = "중복된 닉네임입니다",
+                    @ApiResponse(responseCode = "200", description = "프로필 사진 변경 완료"),
+                    @ApiResponse(responseCode = "404", description = "사진이 존재하지 않습니다",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             })
     @PutMapping("/profileImg")
@@ -106,5 +105,9 @@ public class MemberController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(uploadImageDto);
     }
+
+    /**
+     * 관심키워드 변경
+     */
 
 }
