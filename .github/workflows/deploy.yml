@@ -44,7 +44,6 @@ jobs:
         distribution: 'temurin' 
     # 2-1) Set yml file
     - name : Set yml file
-      uses : microsoft/variable-substitution@v1
       with:
         files: ${{ env.RESOURCE_PATH }} 
       env: 
