@@ -55,15 +55,12 @@ jobs:
         oauth2.google.resource-uri: ${{ secrets.RESOURCE_URI }}
         jwt.secret: ${{ secrets.JWT_SECRET }}
     # 3) gradlew 권한 설정     
-    # - name: Grant execute permission for gradlew
-    #   run: chmod +x gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
       # working-directory: ${{ env.working-directory }}
     # 4) test 제외 gradle 빌드
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
-      with:
-        arguments: clean build -x test
-      # run: ./gradlew clean build -x test
+      run: ./gradlew clean build -x test
       # working-directory: ${{ env.working-directory }}
     # 5) AWS 인증
     - name: Configure AWS credentials
