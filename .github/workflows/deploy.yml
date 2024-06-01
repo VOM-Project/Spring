@@ -9,9 +9,6 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
   
 # flow에서 사용할 변수 같은 느낌입니다.
 #jar 파일 빌드할 s3 버킷, aws 리전, CodeDeploy 앱 이름, 배포그룹이름
@@ -30,7 +27,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: production
     #아래의 flows들이 차례대로 실행됨
     steps:
     # 1) 기본 체크아웃
@@ -59,12 +55,15 @@ jobs:
         oauth2.google.resource-uri: ${{ secrets.RESOURCE_URI }}
         jwt.secret: ${{ secrets.JWT_SECRET }}
     # 3) gradlew 권한 설정     
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    # - name: Grant execute permission for gradlew
+    #   run: chmod +x gradlew
       # working-directory: ${{ env.working-directory }}
     # 4) test 제외 gradle 빌드
     - name: Build with Gradle
-      run: ./gradlew clean build -x test
+      uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+      with:
+        arguments: clean build -x test
+      # run: ./gradlew clean build -x test
       # working-directory: ${{ env.working-directory }}
     # 5) AWS 인증
     - name: Configure AWS credentials
