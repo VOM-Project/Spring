@@ -18,4 +18,8 @@ public class HomepyRepository {
         return em.find(Homepy.class, homepyId);
     }
 
+    public Homepy findByMember_id(Long member_id) {
+        return em.find(Homepy.class, member_id);
+    }
+
 }

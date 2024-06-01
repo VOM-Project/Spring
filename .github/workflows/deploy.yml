@@ -1,0 +1,91 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Java CI with Gradle & Deploy to EC2
+
+# develop 브랜치에 push가 되면 아래의 flow가 실행됨
+on:
+  # Triggers the workflow on push or pull request events but only for the "develop" branch
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+  
+# flow에서 사용할 변수 같은 느낌입니다.
+#jar 파일 빌드할 s3 버킷, aws 리전, CodeDeploy 앱 이름, 배포그룹이름
+env:
+  AWS_REGION: ap-northeast-2
+  S3_BUCKET_NAME: vom-gihub-actions-s3-bucket
+  CODE_DEPLOY_APPLICATION_NAME: vom-codedeploy-app
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: vom-codedeploy-deployment-group
+  # working-directory: ./VOM_Spring  # 이 코드는 제 프로젝트 경로를 맞춰주기 위해 적어주었습니다. 필요하시면 적으세요!
+  RESOURCE_PATH: ./src/main/resources/application-dev.yml
+permissions:
+  contents: read
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    #아래의 flows들이 차례대로 실행됨
+    steps:
+    # 1) 기본 체크아웃
+    - name: Checkout
+      uses: actions/checkout@v4
+    # 2) JDK 17 셋팅  
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin' 
+    # 2-1) Set yml file
+    - name : Set yml file
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }} 
+      env: 
+        spring.datasource.url: ${{ secrets.URL }}
+        spring.datasource.username: ${{ secrets.RDS_USERNAME }}
+        spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+        cloud.aws.s3.bucket: ${{ secrets.BUCKET }}
+        oauth2.google.client-id: ${{ secrets.CLIENT_ID }}
+        oauth2.google.client-secret: ${{ secrets.CLIENT_SECRET }}
+        oauth2.google.redirect-uri: ${{ secrets.REDIRECT_URI }}
+        oauth2.google.token-uri: ${{ secrets.TOKEN_URI }}
+        oauth2.google.resource-uri: ${{ secrets.RESOURCE_URI }}
+        jwt.secret: ${{ secrets.JWT_SECRET }}
+    # 3) gradlew 권한 설정     
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      # working-directory: ${{ env.working-directory }}
+    # 4) test 제외 gradle 빌드
+    - name: Build with Gradle
+      run: ./gradlew clean build -x test
+      # working-directory: ${{ env.working-directory }}
+    # 5) AWS 인증
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+    # 6) AWS S3에 업로드
+    - name: Upload to AWS S3
+      run: |
+        aws deploy push \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --ignore-hidden-files \
+          --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
+          --source .
+    # 7) AWS EC2에 Deploy
+    - name: Deploy to AWS EC2 from S3
+      run: |
+        aws deploy create-deployment \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+
+      
+    
+    

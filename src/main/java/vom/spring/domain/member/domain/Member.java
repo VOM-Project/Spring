@@ -3,11 +3,14 @@ package vom.spring.domain.member.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import vom.spring.domain.homepy.Homepy;
 import vom.spring.domain.touchpoint.Touchpoint;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 
 @Builder
@@ -24,7 +27,7 @@ public class Member {
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate birth;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
     private String profileImgName;
@@ -32,6 +35,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Integer vomVomCount; //수정 필요
+
+    @OneToOne(mappedBy = "member", fetch = LAZY)
+    private Homepy homepy;
+
 
     public void updateNicknameAndEmailAndProfileImg(String nickname, String email, String profileImgUrl) {
         this.nickname = nickname;

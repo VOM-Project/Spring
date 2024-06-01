@@ -14,23 +14,29 @@ public class HomepyController {
         this.homepyService = homepyService;
     }
 
-    @GetMapping(value = "/api/homepy/{member-id}/greeting")
-    public ResponseEntity<String> getGreeting(
+    // 프로필 조회
+    @GetMapping(value = "/api/homepy/{member-id}/profile")
+    public ResponseEntity<?> getProfile(
             @PathVariable("member-id") Long memberId
     ) {
-        // 추후에 member-id로 homepy-id 구하기
-        Long homepyId = memberId;
-        return new ResponseEntity<>(homepyService.getGreeting(homepyId), HttpStatus.OK);
+        return new ResponseEntity<>(homepyService.getProfile(memberId), HttpStatus.OK);
     }
 
-    @PutMapping (value = "/api/homepy/{member-id}/greeting")
+    // 인사말 조회
+    @GetMapping(value = "/api/homepy/{member-id}/greeting")
+    public ResponseEntity<?> getGreeting(
+            @PathVariable("member-id") Long memberId
+    ) {
+        return new ResponseEntity<>(homepyService.getGreeting(memberId), HttpStatus.OK);
+    }
+
+    // 인사말 변경
+    @PostMapping(value = "/api/homepy/{member-id}/greeting")
     public ResponseEntity<HttpStatus> setGreeting(
             @PathVariable("member-id") Long memberId,
             @RequestParam String greeting
     ) {
-        // 추후에 member-id로 homepy-id 구하기
-        Long homepyId = memberId;
-        homepyService.setGreeting(homepyId, greeting);
+        homepyService.setGreeting(memberId, greeting);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

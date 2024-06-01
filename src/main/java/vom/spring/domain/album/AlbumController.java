@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class AlbumController {
@@ -17,12 +18,12 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
+    // 사진 등록
     @PostMapping(value = "/api/album/{member-id}/new")
     public ResponseEntity<HttpStatus> uploadAlbum(
             @PathVariable("member-id") Long memberId,
             @RequestParam("file") MultipartFile multipartFile
     ) throws IOException {
-        // member-id 로 homepy-id 찾아야함
         albumService.uploadAlbum(memberId, multipartFile);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -36,12 +37,11 @@ public class AlbumController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 사진 조회
     @GetMapping(value = "/api/album/{member-id}")
-    public ResponseEntity<?> getAlbum(
+    public ResponseEntity<List<AlbumDto.Info>> getAlbum(
             @PathVariable("member-id") Long memberId
     ) {
-        //member-id로 homepy-id 찾아야함
-        //homepy-id로 album-id 찾아야함
         return new ResponseEntity<>(albumService.getAlbum(memberId), HttpStatus.OK);
     }
 }
