@@ -39,4 +39,9 @@ public class HomepyController {
         homepyService.setGreeting(memberId, greeting);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * 프로필 조회 - 닉네임, 프로필 사진, 관심키워드, 생일, 지역 한꺼번에 조회
+     */
+
 }

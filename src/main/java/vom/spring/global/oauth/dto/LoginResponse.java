@@ -10,4 +10,5 @@ import lombok.Getter;
 public class LoginResponse {
     private Boolean isRegistered;
     private Long memberId;
+    private String accessToken;
 }

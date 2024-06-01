@@ -16,13 +16,31 @@ public class MemberResponseDto {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class VerifyNicknameDto {
-        private boolean isDuplicated;
+        private boolean isExisted;
     }
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetMemberDto {
+        private boolean isExisted;
         private String nickname;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ChangeNicknameDto {
+        private boolean isAvailable;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class UploadImageDto {
+        private String profileImgUrl;
+    }
+
 }

@@ -9,13 +9,10 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Keyword {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "keyword_id")
     private int id;
-
     @Column(nullable = false, name = "keyword_name")
     private String name;
-
-
 }

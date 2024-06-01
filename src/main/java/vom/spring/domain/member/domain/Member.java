@@ -31,7 +31,10 @@ public class Member {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+    private String profileImgName;
     private String profileImgUrl;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private Integer vomVomCount; //수정 필요
 
     @OneToOne(mappedBy = "member", fetch = LAZY)
@@ -47,10 +50,18 @@ public class Member {
         this.email = email;
     }
 
-    public void joinMember(String nickname, /*String profileImgUrl,*/ LocalDate birth , Region region) {
+    public void joinMember(String nickname, LocalDate birth , Region region) {
         this.nickname = nickname;
-//        this.profileImgUrl = profileImgUrl;
         this.birth = birth;
         this.region = region;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImg(String profileImgName, String profileImgUrl) {
+        this.profileImgName = profileImgName;
+        this.profileImgUrl = profileImgUrl;
     }
 }

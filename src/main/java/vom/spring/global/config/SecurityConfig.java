@@ -1,39 +1,40 @@
-//package vom.spring.oauth;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-//import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-//
-//@Configuration
-//@EnableWebSecurity
-//@RequiredArgsConstructor
-//public class SecurityConfig {
-//    private final OAuthService oAuthService;
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
-//        http
-//                .cors(AbstractHttpConfigurer::disable)
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .httpBasic(AbstractHttpConfigurer::disable)
-//                .formLogin(AbstractHttpConfigurer::disable)
-//                //request 인증, 인가 설정
-//                .authorizeRequests(request -> request.requestMatchers(
-//                        new AntPathRequestMatcher("/", "/oauth2/**"),
-//                        new AntPathRequestMatcher("/swagger-ui/**","/v3/api-docs/**")
-//                ).permitAll() //로그인은 다 접근 가능
-//                         .anyRequest().authenticated()) //그외엔 다 인증 필요
-//                //oauth2 기반 인증 설정
-//                .oauth2Login(oAuth2LoginConfigurer -> // OAuth2 로그인 기능에 대한 여러 설정의 진입점
-//                        // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
-//                        oAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuthService))
-//                );
-//                return http.build();
-//    }
-//
-//}
+package vom.spring.global.config;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
+
+@RequiredArgsConstructor
+@EnableWebSecurity
+@Configuration
+public class SecurityConfig {
+    // CORS 설정
+    CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); // ⭐️ 허용할 origin
+            config.setAllowCredentials(true);
+            return config;
+        };
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .build();
+    }
+
+}
