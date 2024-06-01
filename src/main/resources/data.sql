@@ -8,33 +8,20 @@ CREATE TABLE REGION
 );
 
 INSERT INTO REGION (name)
-values ('서울특별시');
-INSERT INTO REGION (name)
-values ('경기도');
-INSERT INTO REGION (name)
-values ('인천광역시');
-INSERT INTO REGION (name)
-values ('강원도');
-INSERT INTO REGION (name)
-values ('충청도');
-INSERT INTO REGION (name)
-values ('대전광역시');
-INSERT INTO REGION (name)
-values ('세종특별시');
-INSERT INTO REGION (name)
-values ('광주광역시');
-INSERT INTO REGION (name)
-values ('전라도');
-INSERT INTO REGION (name)
-values ('경상도');
-INSERT INTO REGION (name)
-values ('대구광역시');
-INSERT INTO REGION (name)
-values ('울산광역시');
-INSERT INTO REGION (name)
-values ('부산광역시');
-INSERT INTO REGION (name)
-values ('제주도');
+values ('서울특별시'),
+       ('경기도'),
+       ('인천광역시'),
+       ('강원도'),
+       ('충청도'),
+       ('대전광역시'),
+       ('세종특별시'),
+       ('광주광역시'),
+       ('전라도'),
+       ('경상도'),
+       ('대구광역시'),
+       ('울산광역시'),
+       ('부산광역시'),
+       ('제주도');
 
 DROP TABLE IF EXISTS Keyword;
 
@@ -74,6 +61,8 @@ values ('사진');
 INSERT INTO KEYWORD (name)
 values ('패션');
 
-Insert INTO MEMBER(email, nickname, role) values ('test1@example.com', '지민','USER');
-Insert INTO MEMBER(email, nickname, role) values ('test2@example.com', '윤지','USER');
+Insert INTO MEMBER(email, nickname, role)
+values ('test1@example.com', '지민', 'USER');
+Insert INTO MEMBER(email, nickname, role)
+values ('test2@example.com', '윤지', 'USER');
 

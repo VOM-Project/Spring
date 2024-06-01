@@ -38,9 +38,7 @@ application.yml
 .vscode/
 
 ### yml file ###
-src/main/**/application.yml
 src/main/**/application-local.yml
-src/main/**/application-dev.yml
 
 # 배포 관련 수정
 appspec.yml
