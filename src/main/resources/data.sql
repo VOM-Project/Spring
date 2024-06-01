@@ -73,3 +73,7 @@ INSERT INTO KEYWORD (name)
 values ('사진');
 INSERT INTO KEYWORD (name)
 values ('패션');
+
+Insert INTO MEMBER(email, nickname, role) values ('test1@example.com', '지민','USER');
+Insert INTO MEMBER(email, nickname, role) values ('test2@example.com', '윤지','USER');
+

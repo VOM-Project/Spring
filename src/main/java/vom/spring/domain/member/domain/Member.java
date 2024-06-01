@@ -46,6 +46,7 @@ public class Member {
         this.nickname = nickname;
         this.birth = birth;
         this.region = region;
+        this.role = Role.USER;
     }
 
     public void updateNickname(String nickname) {
