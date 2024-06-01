@@ -39,3 +39,6 @@ application.yml
 
 ### yml file ###
 src/main/**/application-local.yml
+
+### data.sql ###
+src/main/**/data.sql
