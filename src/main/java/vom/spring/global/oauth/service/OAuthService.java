@@ -10,10 +10,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import vom.spring.global.jwt.JwtTokenProvider;
-import vom.spring.global.oauth.dto.LoginRequest;
-import vom.spring.global.oauth.dto.LoginResponse;
 import vom.spring.domain.member.domain.Member;
 import vom.spring.domain.member.repository.MemberRepository;
+import vom.spring.global.oauth.dto.LoginRequestDto;
+import vom.spring.global.oauth.dto.LoginResponseDto;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +22,9 @@ public class OAuthService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
     @Transactional
-    public LoginResponse socialLogin(String code, String registrationId) {
+    public LoginResponseDto.GetLoginDto socialLogin(String code, String registrationId) {
         //로그인 시도
         //해당 이메일로 유저 조회
         //이미 있는 유저이면 true담아서 보내고
@@ -40,16 +41,16 @@ public class OAuthService {
         String nickname = userResourceNode.get("name").asText();
         boolean isRegistered = memberRepository.existsByEmail(email);
         //회원가입이 되어있지 않은경우
-        if(!isRegistered) {
+        if (!isRegistered) {
             Member newMember = new Member(email);
-            return LoginResponse.builder()
+            return LoginResponseDto.GetLoginDto.builder()
                     .isRegistered(false)
                     .memberId(newMember.getId())
                     .build();
         }
         //회원가입이 되어있는 경우
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Not Exist User"));
-        return LoginResponse.builder()
+        return LoginResponseDto.GetLoginDto.builder()
                 .isRegistered(true)
                 .memberId(member.getId())
                 .build();
@@ -57,8 +58,9 @@ public class OAuthService {
 //        System.out.println("email = " + email);
 //        System.out.println("nickname = " + nickname);
     }
+
     @Transactional
-    public LoginResponse front_socialLogin(LoginRequest request, String registrationId) {
+    public LoginResponseDto.GetLoginDto front_socialLogin(LoginRequestDto.LoginCodeDto request, String registrationId) {
         //로그인 시도
         //해당 이메일로 유저 조회
         //이미 있는 유저이면 true담아서 보내고
@@ -75,10 +77,10 @@ public class OAuthService {
         String nickname = userResourceNode.get("name").asText();
         boolean isRegistered = memberRepository.existsByEmail(email);
         //회원가입이 되어있지 않은경우
-        if(!isRegistered) {
+        if (!isRegistered) {
             Member newMember = new Member(email);
             String token = issueToken(newMember);
-            return LoginResponse.builder()
+            return LoginResponseDto.GetLoginDto.builder()
                     .isRegistered(false)
                     .memberId(newMember.getId())
                     .accessToken(token)
@@ -87,7 +89,7 @@ public class OAuthService {
         //회원가입이 되어있는 경우
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Not Exist User"));
         String token = issueToken(member);
-        return LoginResponse.builder()
+        return LoginResponseDto.GetLoginDto.builder()
                 .isRegistered(true)
                 .memberId(member.getId())
                 .accessToken(token)
@@ -96,6 +98,7 @@ public class OAuthService {
 //        System.out.println("email = " + email);
 //        System.out.println("nickname = " + nickname);
     }
+
     //google access token 발급
     private String getAccessToken(String authorizationCode, String registrationId) {
         String clientId = env.getProperty("oauth2." + registrationId + ".client-id");
@@ -119,9 +122,10 @@ public class OAuthService {
         JsonNode accessTokenNode = responseNode.getBody();
         return accessTokenNode.get("access_token").asText();
     }
+
     //유저정보 받기
     private JsonNode getUserResource(String accessToken, String registrationId) {
-        String resourceUri = env.getProperty("oauth2."+registrationId+".resource-uri");
+        String resourceUri = env.getProperty("oauth2." + registrationId + ".resource-uri");
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity entity = new HttpEntity(headers);
@@ -142,4 +146,15 @@ public class OAuthService {
     /**
      * 사용자 탈퇴 추가
      */
+
+    /**
+     * 임시 로그인
+     */
+    public LoginResponseDto.TempLoginDto tempLogin(LoginRequestDto.TempLoginDto request) {
+        Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 member입니다"));
+        String accessToken = issueToken(member);
+        return LoginResponseDto.TempLoginDto.builder()
+                .accessToken(accessToken)
+                .build();
+    }
 }

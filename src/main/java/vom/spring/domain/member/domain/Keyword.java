@@ -11,8 +11,7 @@ import lombok.*;
 public class Keyword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "keyword_id")
     private int id;
-    @Column(nullable = false, name = "keyword_name")
+    @Column(nullable = false)
     private String name;
 }

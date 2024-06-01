@@ -53,6 +53,7 @@ public class MemberController {
         MemberResponseDto.VerifyNicknameDto response = memberService.verifyNickname(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
     /**
      * 닉네임 변경 - 마이페이지
      */

@@ -1,8 +1,7 @@
 package vom.spring.domain.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,6 +9,8 @@ import java.util.List;
 public class MemberRequestDto {
     @Builder
     @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class CreateMemberDto {
         private Long memberId;
         private String nickname;
@@ -21,12 +22,15 @@ public class MemberRequestDto {
 
     @Builder
     @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class VerfyNicknameDto {
         private String nickname;
     }
-
     @Builder
     @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class ChangeNicknameDto {
         private String nickname;
     }

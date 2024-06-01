@@ -11,9 +11,8 @@ import lombok.*;
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "region_id")
     private int id;
 
-    @Column(nullable = false, name = "region_name")
+    @Column(nullable = false)
     private String name;
 }
