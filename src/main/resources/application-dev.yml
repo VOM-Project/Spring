@@ -12,11 +12,11 @@ spring:
     url: ${URL}
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
-
   jpa:
     hibernate:
-      ddl-auto: create
-      dialect: org.hibernate.dialect.MySQL8Dialect
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
         format_sql: true
