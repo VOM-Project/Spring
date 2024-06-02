@@ -1,7 +1,10 @@
 package vom.spring.domain.webpush;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class WebpushDto {
     private Long fromMemberId;
     private LocalDateTime createdAt;
@@ -12,28 +15,4 @@ public class WebpushDto {
         this.createdAt = createdAt;
 //        this.webcamId = webcamId;
     }
-
-    public Long getFromMemberId() {
-        return fromMemberId;
-    }
-
-    public void setFromMemberId(Long fromMemberId) {
-        this.fromMemberId = fromMemberId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-//    public Long getWebcamId() {
-//        return webcamId;
-//    }
-//
-//    public void setFromMemberProfileImgUrl(String fromMemberProfileUrl) {
-//        this.webcamId = webcamId;
-//    }
 }
