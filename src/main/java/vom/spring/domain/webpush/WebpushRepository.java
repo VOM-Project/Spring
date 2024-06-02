@@ -13,8 +13,8 @@ public class WebpushRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public void save(Touchpoint touchpoint) {
-        em.persist(touchpoint);
+    public void save(Webpush webpush) {
+        em.persist(webpush);
     }
 
     public List<WebpushDto> findFromMemberIdsByToMemberId(Long toMemberId) {
