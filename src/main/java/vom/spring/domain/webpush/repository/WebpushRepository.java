@@ -1,10 +1,10 @@
-package vom.spring.domain.webpush;
+package vom.spring.domain.webpush.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import vom.spring.domain.touchpoint.Touchpoint;
-import vom.spring.domain.touchpoint.TouchpointDto;
+import vom.spring.domain.webpush.domain.Webpush;
+import vom.spring.domain.webpush.dto.WebpushDto;
 
 import java.util.List;
 

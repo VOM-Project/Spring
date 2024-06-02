@@ -1,23 +1,13 @@
-package vom.spring.domain.webpush;
+package vom.spring.domain.webpush.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
-import vom.spring.domain.member.domain.Member;
 import vom.spring.domain.member.repository.MemberRepository;
-import vom.spring.domain.touchpoint.Touchpoint;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import vom.spring.domain.webpush.dto.WebpushDto;
+import vom.spring.domain.webpush.repository.WebpushRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class WebpushService {

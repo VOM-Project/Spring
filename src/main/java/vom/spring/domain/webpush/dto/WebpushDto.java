@@ -1,4 +1,4 @@
-package vom.spring.domain.webpush;
+package vom.spring.domain.webpush.dto;
 
 import lombok.Getter;
 

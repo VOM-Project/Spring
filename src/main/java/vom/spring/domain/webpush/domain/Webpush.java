@@ -1,4 +1,4 @@
-package vom.spring.domain.webpush;
+package vom.spring.domain.webpush.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
