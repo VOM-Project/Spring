@@ -29,8 +29,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket' //webrtc
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+ 	implementation 'org.springframework.boot:spring-boot-starter-websocket' // WebSocket, stomp 사용
+//	implementation 'org.webjars:sockjs-client:1.5.1' // sockJS
+//	implementation 'org.webjars:stomp-websocket:2.3.4'//stompJS
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
