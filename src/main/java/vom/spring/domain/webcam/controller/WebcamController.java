@@ -7,21 +7,44 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vom.spring.domain.webcam.dto.WebcamRequestDto;
+import vom.spring.domain.webcam.dto.WebcamResponseDto;
+import vom.spring.domain.webcam.service.WebcamServcie;
 
 @Tag(name = "화상채팅(시그널링) API", description = "유저 API 명세서")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-//db 업데이트 로직 필요
+//db에 webcam 업데이트 로직 필요
 public class WebcamController {
+    private final WebcamServcie webcamServcie;
+    /**
+     * 방 생성
+     */
+    @Operation(summary = "화상채팅 방을 생성합니다", description = "원하는 memberId와 화상채팅 방을 생성합니다",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "화상채팅 방을 생성했습니다."),
+                    @ApiResponse(responseCode = "400", description = "채팅 방을 생성하지 못했습니다.",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                    @ApiResponse(responseCode = "409", description = "올바르지 않은 닉네임, 올바르지 않은 이메일",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            })
+    @PostMapping("/api/webcam")
+    public ResponseEntity<WebcamResponseDto.CreateWebcamDto> createWebcamRoom(@RequestBody WebcamRequestDto.CreateWebcamDto request) {
+        WebcamResponseDto.CreateWebcamDto response = webcamServcie.createWebcamRoom(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
     /**
      * offer 정보를 주고받기
      */

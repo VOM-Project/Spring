@@ -24,7 +24,7 @@ public class MemberResponseDto {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetMemberDto {
         private boolean isExisted;
-        private String nickname;
+        private Long memberId;
     }
 
     @Getter

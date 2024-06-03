@@ -89,10 +89,16 @@ public class JwtTokenProvider {
         return null;
     }
 
-    //user email 검색
+    //member email 검색
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
                 .getBody().get("email").toString();
+    }
+
+    //member id 검색
+    public Long getMemberId(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().get("id", Long.class);
     }
 
     /**
