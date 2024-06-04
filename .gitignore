@@ -44,3 +44,6 @@ src/main/**/application-dev.yml
 
 # 배포 관련 수정
 appspec.yml
+
+### Firebase Admin SDK ###
+src/main/resources/firebase
