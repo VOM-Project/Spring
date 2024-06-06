@@ -24,7 +24,6 @@ public class FcmServiceImpl extends FcmService {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer " + getAccessToken());
 
@@ -32,9 +31,8 @@ public class FcmServiceImpl extends FcmService {
 
         String API_URL = "https://fcm.googleapis.com/v1/projects/vomvom-fd09b/messages:send";
 //        String API_URL = "https://fcm.googleapis.com/fcm/send";
-        ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-        System.out.println(response.getStatusCode());
+        ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
         return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
     }
@@ -51,7 +49,7 @@ public class FcmServiceImpl extends FcmService {
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
+                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase.messaging"));
 
         googleCredentials.refreshIfExpired();
 
