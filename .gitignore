@@ -45,3 +45,7 @@ src/main/resources/firebase
 
 ### data.sql ###
 src/main/**/data.sql
+
+### keystore file ###
+keystore.p12
+

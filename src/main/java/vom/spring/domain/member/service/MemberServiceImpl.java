@@ -117,12 +117,21 @@ public class MemberServiceImpl implements MemberService {
             findMember = null;
             return MemberResponseDto.GetMemberDto.builder()
                     .isExisted(isExisted)
+                    .findMemberId(null)
                     .nickname(null)
+                    .birth(null)
+                    .region(null)
+                    .email(null)
+                    .profileImgUrl(null)
                     .build();
         }
         return MemberResponseDto.GetMemberDto.builder()
                 .isExisted(isExisted)
-                .nickname(findMember.getNickname())
+                .findMemberId(findMember.getId())
+                .email(findMember.getEmail())
+                .region(findMember.getRegion().getName())
+                .birth(findMember.getBirth())
+                .profileImgUrl(findMember.getProfileImgUrl())
                 .build();
     }
 
