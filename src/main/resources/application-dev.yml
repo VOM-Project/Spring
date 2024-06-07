@@ -59,4 +59,4 @@ springdoc:
 
 jwt :
   secret: ${JWT_SECRET}
-  expiration_time: 2592000 #30일
+  expiration_time: 2678400000  #31일
