@@ -10,7 +10,7 @@ public class VomvomResponseDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public class GetMembersDto {
+    public static class GetMembersDto {
         private List<MemberDto> memberDtoList;
     }
 
@@ -18,7 +18,7 @@ public class VomvomResponseDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public class MemberDto {
+    public static class MemberDto {
         private String nickname;
         private String profileUrl;
     }
@@ -27,7 +27,7 @@ public class VomvomResponseDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public class AcceptVomvomDto {
+    public static class AcceptVomvomDto {
         private boolean isVomvom;
     }
 }

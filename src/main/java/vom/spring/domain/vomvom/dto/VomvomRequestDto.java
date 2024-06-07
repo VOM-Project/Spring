@@ -8,7 +8,7 @@ public class VomvomRequestDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public class ReqeustVomvomDto {
+    public static class ReqeustVomvomDto {
         private Long toMemberId;
     }
 
@@ -16,7 +16,7 @@ public class VomvomRequestDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public class AcceptVomvomDto {
+    public static class AcceptVomvomDto {
         private String nickname;
     }
 

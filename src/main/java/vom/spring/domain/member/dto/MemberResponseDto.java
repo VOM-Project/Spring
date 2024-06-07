@@ -2,6 +2,8 @@ package vom.spring.domain.member.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 public class MemberResponseDto {
     @Getter
     @Builder
@@ -24,7 +26,12 @@ public class MemberResponseDto {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetMemberDto {
         private boolean isExisted;
-        private Long memberId;
+        private Long findMemberId;
+        private String nickname;
+        private String profileImgUrl;
+        private String email;
+        private LocalDate birth;
+        private String region;
     }
 
     @Getter

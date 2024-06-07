@@ -42,3 +42,6 @@ src/main/**/application-local.yml
 
 ### data.sql ###
 src/main/**/data.sql
+
+### keystore file ###
+keystore.p12
