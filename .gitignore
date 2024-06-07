@@ -40,8 +40,12 @@ application.yml
 ### yml file ###
 src/main/**/application-local.yml
 
+### Firebase Admin SDK ###
+src/main/resources/firebase
+
 ### data.sql ###
 src/main/**/data.sql
 
 ### keystore file ###
 keystore.p12
+
