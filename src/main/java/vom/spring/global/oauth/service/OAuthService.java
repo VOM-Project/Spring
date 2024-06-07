@@ -2,6 +2,7 @@ package vom.spring.global.oauth.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,28 @@ import vom.spring.domain.member.repository.MemberRepository;
 import vom.spring.global.oauth.dto.LoginRequestDto;
 import vom.spring.global.oauth.dto.LoginResponseDto;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
-    private final Environment env;
+//    private final Environment env;
+    @Value("${oauth2.google.client-id}")
+    private String clientId;
+
+    @Value("${oauth2.google.client-secret}")
+    private String clientSecret;
+
+    @Value("${oauth2.google.redirect-uri}")
+    private String redirectUri;
+
+    @Value("${oauth2.google.token-uri}")
+    private String tokenUri;
+
+    @Value("${oauth2.google.resource-uri}")
+    private String resourceUri;
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -43,9 +62,10 @@ public class OAuthService {
         //회원가입이 되어있지 않은경우
         if (!isRegistered) {
             Member newMember = new Member(email);
+            Member savedMember = memberRepository.save(newMember);
             return LoginResponseDto.GetLoginDto.builder()
                     .isRegistered(false)
-                    .memberId(newMember.getId())
+                    .memberId(savedMember.getId())
                     .build();
         }
         //회원가입이 되어있는 경우
@@ -54,20 +74,18 @@ public class OAuthService {
                 .isRegistered(true)
                 .memberId(member.getId())
                 .build();
-//        System.out.println("id = " + id);
-//        System.out.println("email = " + email);
-//        System.out.println("nickname = " + nickname);
     }
 
     @Transactional
-    public LoginResponseDto.GetLoginDto front_socialLogin(LoginRequestDto.LoginCodeDto request, String registrationId) {
+    public LoginResponseDto.GetLoginDto front_socialLogin(String code) {
         //로그인 시도
         //해당 이메일로 유저 조회
         //이미 있는 유저이면 true담아서 보내고
         //아니면 false 담아 보낸 후 회원가입 시도
-//        System.out.println("인가code = " + code);
+        System.out.println("인가code = " + code);
 //        System.out.println("registrationId = " + registrationId);
-        String accessToken = getAccessToken(request.getAuth_code(), registrationId);
+        String registrationId = "google";
+        String accessToken = getAccessToken(code, registrationId);
 //        System.out.println("accessToken = " +accessToken);
         JsonNode userResourceNode = getUserResource(accessToken, registrationId);
 //        System.out.println("userResourceNode = " + userResourceNode);
@@ -79,10 +97,11 @@ public class OAuthService {
         //회원가입이 되어있지 않은경우
         if (!isRegistered) {
             Member newMember = new Member(email);
-            String token = issueToken(newMember);
+            Member savedMember = memberRepository.save(newMember);
+            String token = issueToken(savedMember);
             return LoginResponseDto.GetLoginDto.builder()
                     .isRegistered(false)
-                    .memberId(newMember.getId())
+                    .memberId(savedMember.getId())
                     .accessToken(token)
                     .build();
         }
@@ -94,27 +113,24 @@ public class OAuthService {
                 .memberId(member.getId())
                 .accessToken(token)
                 .build();
-//        System.out.println("id = " + id);
-//        System.out.println("email = " + email);
-//        System.out.println("nickname = " + nickname);
     }
 
     //google access token 발급
     private String getAccessToken(String authorizationCode, String registrationId) {
-        String clientId = env.getProperty("oauth2." + registrationId + ".client-id");
-        String clientSecret = env.getProperty("oauth2." + registrationId + ".client-secret");
-        String redirectUri = env.getProperty("oauth2." + registrationId + ".redirect-uri");
-        String tokenUri = env.getProperty("oauth2." + registrationId + ".token-uri");
-
+//        String clientId = env.getProperty("oauth2." + registrationId + ".client-id");
+//        String clientSecret = env.getProperty("oauth2." + registrationId + ".client-secret");
+//        String redirectUri = env.getProperty("oauth2." + registrationId + ".redirect-uri");
+//        String tokenUri = env.getProperty("oauth2." + registrationId + ".token-uri");
+        String decode = URLDecoder.decode(authorizationCode, StandardCharsets.UTF_8);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", authorizationCode);
+        params.add("grant_type", "authorization_code");
+        params.add("code", decode);
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
-        params.add("grant_type", "authorization_code");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Content-type", "application/x-www-form-urlencoded");
 
         HttpEntity entity = new HttpEntity(params, headers);
 
@@ -125,7 +141,7 @@ public class OAuthService {
 
     //유저정보 받기
     private JsonNode getUserResource(String accessToken, String registrationId) {
-        String resourceUri = env.getProperty("oauth2." + registrationId + ".resource-uri");
+//        String resourceUri = env.getProperty("oauth2." + registrationId + ".resource-uri");
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity entity = new HttpEntity(headers);
