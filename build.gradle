@@ -29,6 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.google.firebase:firebase-admin:9.2.0'           // Google Firebase Admin
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'     // Jackson Data Bind
+	implementation 'org.springframework.boot:spring-boot-starter-json' //webPush
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
  	implementation 'org.springframework.boot:spring-boot-starter-websocket' // WebSocket, stomp 사용
 //	implementation 'org.webjars:sockjs-client:1.5.1' // sockJS
@@ -45,7 +48,6 @@ dependencies {
 	compileOnly("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-	//stomp, socketjs
 }
 
 tasks.named('test') {
