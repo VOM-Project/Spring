@@ -128,6 +128,7 @@ public class MemberServiceImpl implements MemberService {
         return MemberResponseDto.GetMemberDto.builder()
                 .isExisted(isExisted)
                 .findMemberId(findMember.getId())
+                .nickname(findMember.getNickname())
                 .email(findMember.getEmail())
                 .region(findMember.getRegion().getName())
                 .birth(findMember.getBirth())
