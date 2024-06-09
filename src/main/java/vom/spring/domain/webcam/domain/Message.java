@@ -14,8 +14,8 @@ import lombok.*;
 public class Message {
     @Enumerated(EnumType.STRING)
     private Type type;
-    private String webcamId;
-    private String sender;
+    private Long webcamId;
+    private Long sender;
     private Object offer;
     private Object answer;
     private Object ice;

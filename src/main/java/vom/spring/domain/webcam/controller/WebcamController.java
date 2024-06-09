@@ -16,10 +16,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vom.spring.domain.webcam.domain.Message;
 import vom.spring.domain.webcam.dto.WebcamRequestDto;
 import vom.spring.domain.webcam.dto.WebcamResponseDto;
@@ -111,4 +108,22 @@ public class WebcamController {
 //    public String sendKey(@Payload String message) {
 //        return message;
 //    }
+
+    /**
+     * 방 삭제
+     */
+    @Operation(summary = "화상채팅 방을 삭제합니다", description = "화상채팅 방을 삭제합니다",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "화상채팅 방을 삭제했습니다."),
+                    @ApiResponse(responseCode = "400", description = "채팅 방을 삭제하지 못했습니다.",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "채팅 방을 찾지 못했습니다",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            })
+    @DeleteMapping("/api/webcam")
+    public ResponseEntity<Void> deleteWebcamRoom(@RequestBody WebcamRequestDto.DeleteWebcamDto request) {
+        System.out.print("방id: " + request.getRoomId());
+        webcamServcie.deleteWebcamRoom(request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

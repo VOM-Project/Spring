@@ -42,4 +42,17 @@ public class WebcamServiceImpl implements WebcamServcie{
         memberWebcamRepository.save(toMemberWebcam);
         return WebcamResponseDto.CreateWebcamDto.builder().webcamId(newWebcam.getId()).build();
     }
+
+    @Transactional
+    @Override
+    public void deleteWebcamRoom(WebcamRequestDto.DeleteWebcamDto request) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName(); //현재 접속 유저 정보 가져오기
+        Member fromMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않은 유저입니다"));
+        //해당 방 찾기
+        Webcam webcam = webcamRepository.findById(request.getRoomId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 방입니다"));
+        //해당 방 관련 연관관계 삭제
+        memberWebcamRepository.deleteByWebcam(webcam);
+        //해당 방 삭제
+        webcamRepository.deleteById(webcam.getId());
+    }
 }
