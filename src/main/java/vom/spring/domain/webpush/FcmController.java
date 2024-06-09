@@ -32,6 +32,7 @@ public class FcmController {
                 .resultCode(SuccessCode.SELECT_SUCCESS.getStatus())
                 .resultMsg(SuccessCode.SELECT_SUCCESS.getMessage())
                 .build();
+
         return new ResponseEntity<>(arw, HttpStatus.OK);
     }
 }

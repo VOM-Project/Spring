@@ -3,14 +3,18 @@ package vom.spring.domain.webpush;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.List;
 
-public class FcmServiceImpl extends FcmService {
+@Slf4j
+@Service
+public class FcmServiceImpl implements FcmService {
     /**
      * 푸시 메시지 처리를 수행하는 비즈니스 로직
      *
@@ -24,17 +28,25 @@ public class FcmServiceImpl extends FcmService {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + getAccessToken());
 
         HttpEntity entity = new HttpEntity<>(message, headers);
 
         String API_URL = "https://fcm.googleapis.com/v1/projects/vomvom-fd09b/messages:send";
 //        String API_URL = "https://fcm.googleapis.com/fcm/send";
+        ResponseEntity<String> response = null;
 
-        ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
-
-        return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
+        try {
+            response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+            System.out.println(response.getStatusCode());
+            return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
+        } catch (Exception e) {
+            log.error("[-] FCM 전송 오류 :: " + e.getMessage());
+            log.error("[-] 오류 발생 토큰 :: [" + fcmSendDto.getToken() + "]");
+            log.error("[-] 오류 발생 메시지 :: [" + fcmSendDto.getBody() + "]");
+            return 0;
+        }
     }
 
     /**

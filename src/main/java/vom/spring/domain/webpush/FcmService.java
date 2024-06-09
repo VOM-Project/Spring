@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class FcmService {
-    int sendMessageTo(FcmSendDto fcmSendDto) throws IOException {
-        return 0;
-    }
+public interface FcmService {
+    int sendMessageTo(FcmSendDto fcmSendDto) throws IOException;
 }
