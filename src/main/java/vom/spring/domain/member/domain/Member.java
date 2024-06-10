@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import vom.spring.domain.homepy.Homepy;
 import vom.spring.domain.touchpoint.Touchpoint;
+import vom.spring.domain.webpush.domain.Fcm;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class Member {
 
     @OneToOne(mappedBy = "member", fetch = LAZY)
     private Homepy homepy;
+
+    @OneToOne(mappedBy = "member", fetch = LAZY)
+    private Fcm fcm;
 
 
     public void updateNicknameAndEmailAndProfileImg(String nickname, String email, String profileImgUrl) {
