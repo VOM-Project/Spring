@@ -1,4 +1,4 @@
-package vom.spring.domain.webpush;
+package vom.spring.domain.webpush.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import vom.spring.domain.member.domain.Member;
 import vom.spring.domain.member.repository.MemberRepository;
+import vom.spring.domain.webpush.dto.FcmMessageDto;
 import vom.spring.domain.webpush.domain.Fcm;
 import vom.spring.domain.webpush.repository.FcmRepository;
 
@@ -39,9 +40,6 @@ public class FcmService {
 
         Member member = memberRepository.findById(member_id).get();
 
-
-        System.out.println(fcmToken);
-        System.out.println(member_id);
         fcmRepository.save(
                 Fcm.builder()
                         .createdAt(LocalDateTime.now())
@@ -54,17 +52,11 @@ public class FcmService {
     /**
      * 푸시 메시지 처리를 수행하는 비즈니스 로직
      *
-//     * @param fcmSendDto 모바일에서 전달받은 Object
      * @return 성공(1), 실패(0)
      */
-//    public int sendMessageTo(FcmSendDto fcmSendDto) throws IOException {
     public int sendMessageTo(Long memberId) throws IOException {
 
-        System.out.println("1111111111");
-
-//        String message = makeMessage(fcmSendDto);
         String message = makeMessage(memberId);
-        System.out.println("22222222");
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -83,8 +75,6 @@ public class FcmService {
             return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
         } catch (Exception e) {
             log.error("[-] FCM 전송 오류 :: " + e.getMessage());
-//            log.error("[-] 오류 발생 토큰 :: [" + fcmSendDto.getToken() + "]");
-//            log.error("[-] 오류 발생 메시지 :: [" + fcmSendDto.getBody() + "]");
             return 0;
         }
     }
@@ -98,7 +88,6 @@ public class FcmService {
      */
     private String getAccessToken() throws IOException {
 
-        System.out.println("woooooooooooooooowwwww");
         String firebaseConfigPath = "firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
@@ -113,18 +102,19 @@ public class FcmService {
     }
 
     /**
-     * FCM 전송 정보를 기반으로 메시지를 구성합니다. (Object -> String)
+     * FCM 전송 정보를 기반으로 메시지를 구성합니다.
      *
-//     * @param fcmSendDto FcmSendDto
      * @return String
      */
-//    private String makeMessage(FcmSendDto fcmSendDto) throws JsonProcessingException {
     private String makeMessage(Long memberId) throws JsonProcessingException {
 
         ObjectMapper om = new ObjectMapper();
         Fcm fcm = fcmRepository.findByMember_id(memberId);
 
-        System.out.println(fcm.getId());
+        if (fcm == null) {
+            log.error("Fcm token not found for memberId: " + memberId);
+            throw new IllegalArgumentException("Fcm token not found for memberId: " + memberId);
+        }
 
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
