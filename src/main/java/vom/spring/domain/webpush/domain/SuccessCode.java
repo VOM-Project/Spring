@@ -1,4 +1,4 @@
-package vom.spring.domain.webpush;
+package vom.spring.domain.webpush.domain;
 
 public enum SuccessCode {
     SELECT_SUCCESS(200, "데이터 조회 성공"),
