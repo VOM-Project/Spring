@@ -16,6 +16,7 @@ import vom.spring.domain.member.repository.MemberRepository;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,19 +42,21 @@ public class AlbumService {
     @Transactional
     public void uploadAlbum(Long memberId, MultipartFile multipartFile) throws IOException {
         Homepy homepy = homepyRepository.findByMember_id(memberId);
+
         String originalFilename = multipartFile.getOriginalFilename();
+        String uniqueFilename = UUID.randomUUID().toString();
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        amazonS3Client.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
+        amazonS3Client.putObject(bucket, uniqueFilename, multipartFile.getInputStream(), metadata);
 
         albumRepository.save(
                 Album.builder()
                         .homepy(homepy)
                         .name(originalFilename)
-                        .img_url(amazonS3Client.getUrl(bucket, originalFilename).toString())
+                        .img_url(amazonS3Client.getUrl(bucket, uniqueFilename).toString())
                         .createdAt(LocalDateTime.now())
                         .build()
         );
