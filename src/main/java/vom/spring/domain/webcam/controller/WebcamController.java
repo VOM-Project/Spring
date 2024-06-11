@@ -48,14 +48,6 @@ public class WebcamController {
     /**
      * offer 정보를 주고받기 - step 5에서 offer를 받고 구독하고 있는 client들에게 전송
      */
-//    @MessageMapping("/peer/offer/{camKey}/{webcamId}") //해당 경로로 메시지가 날아오면 해당 메서드 실행해서 리턴, /app/~~이런식으로 전달된다
-//    @SendTo("/topic/peer/offer/{camKey}/{webcamId}")
-//    //camKey : 각 요청하는 캠의 key , roomId : 룸 아이디 =>룸 id를 webcam id로 수정
-//    public String PeerHandleOffer(@Payload String offer, @DestinationVariable(value = "webcamId") String webcamId, @DestinationVariable(value = "camKey") String camKey) {
-//        log.info("[OFFER] {} : {}", camKey, offer);
-////        messagingTemplate.convertAndSend("/topic/peer/offer/" +message.getWebcamId(), message);
-//        return offer;
-//    }
     @MessageMapping("/peer/offer/{webcamId}") //해당 경로로 메시지가 날아오면 해당 메서드 실행해서 리턴, /app/~~이런식으로 전달된다
     @SendTo("/topic/peer/offer/{webcamId}")
     public Message PeerHandleOffer(Message message, @DestinationVariable(value = "webcamId") String webcamId) {
@@ -78,13 +70,6 @@ public class WebcamController {
     /**
      * answer 정보 주고받기
      */
-//    @MessageMapping("/peer/answer/{webcamId}")
-//    @SendTo("/topic/peer/answer/{camKey}/{webcamId}")
-//    public String PeerHandleAnswer(@Payload String answer, @DestinationVariable(value = "webcamId") String webcamId, @DestinationVariable(value = "camKey") String camKey) {
-//        log.info("[ANSWER] {} : {}", camKey, answer);
-////        messagingTemplate.convertAndSend("/topic/peer/answer/" + message.getWebcamId(), message);
-//        return answer;
-//    }
     @MessageMapping("/peer/answer/{webcamId}")
     @SendTo("/topic/peer/answer/{webcamId}")
     public Message PeerHandleAnswer(Message message, @DestinationVariable(value = "webcamId") String webcamId) {
@@ -94,23 +79,15 @@ public class WebcamController {
     }
 
     /**
-     * camKey 를 받기위해 신호를 보내는 webSocket
+     * leave 정보 주고받기
      */
-//    @MessageMapping("/call/key")
-//    @SendTo("/topic/call/key")
-//    public String callKey(@Payload String message) {
-//        log.info("[Key] : {}", message);
-//        return message;
-//    }
-
-    /**
-     * 자신의 camKey 를 모든 연결된 세션에 보내는 webSocket
-     */
-//    @MessageMapping("/send/key")
-//    @SendTo("/topic/send/key")
-//    public String sendKey(@Payload String message) {
-//        return message;
-//    }
+    @MessageMapping("/peer/leaveRoom/{webcamId}")
+    @SendTo("/topic/peer/leaveRoom/{webcamId}")
+    public Message PeerHandleLeave(Message message, @DestinationVariable(value = "webcamId") String webcamId) {
+        log.info("[LEAVE] sender: {}, 전달할 곳 : {} ", message.getSender(), message.getWebcamId());
+//        messagingTemplate.convertAndSend("/topic/peer/answer/" + message.getWebcamId(), message);
+        return message;
+    }
 
     /**
      * 방 삭제
