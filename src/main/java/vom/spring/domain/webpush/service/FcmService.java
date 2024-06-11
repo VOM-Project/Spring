@@ -56,7 +56,15 @@ public class FcmService {
      */
     public int sendMessageTo(Long memberId) throws IOException {
 
-        String message = makeMessage(memberId);
+        Fcm fcm = fcmRepository.findByMember_id(memberId);
+
+        if (fcm == null) {
+//            log.error("Fcm token not found for memberId: " + memberId);
+//            throw new IllegalArgumentException("Fcm token not found for memberId: " + memberId);
+            return 0;
+        }
+
+        String message = makeMessage(fcm);
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -106,15 +114,9 @@ public class FcmService {
      *
      * @return String
      */
-    private String makeMessage(Long memberId) throws JsonProcessingException {
+    private String makeMessage(Fcm fcm) throws JsonProcessingException {
 
         ObjectMapper om = new ObjectMapper();
-        Fcm fcm = fcmRepository.findByMember_id(memberId);
-
-        if (fcm == null) {
-            log.error("Fcm token not found for memberId: " + memberId);
-            throw new IllegalArgumentException("Fcm token not found for memberId: " + memberId);
-        }
 
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
