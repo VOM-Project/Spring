@@ -15,6 +15,8 @@ import vom.spring.domain.webcam.repository.MemberWebcamRepository;
 import vom.spring.domain.webcam.repository.WebcamRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +45,9 @@ public class WebcamServiceImpl implements WebcamServcie{
         return WebcamResponseDto.CreateWebcamDto.builder().webcamId(newWebcam.getId()).build();
     }
 
+    /**
+     * 화상채팅 방 삭제
+     */
     @Transactional
     @Override
     public void deleteWebcamRoom(WebcamRequestDto.DeleteWebcamDto request) {
@@ -54,5 +59,26 @@ public class WebcamServiceImpl implements WebcamServcie{
         memberWebcamRepository.deleteByWebcam(webcam);
         //해당 방 삭제
         webcamRepository.deleteById(webcam.getId());
+    }
+
+    /**
+     * 상대방 정보 조회
+     */
+    @Override
+    public WebcamResponseDto.GetRemoteMemberDto getRemoteMemberId(Long webcamId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName(); //현재 접속 유저 정보 가져오기
+        Member currentMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않은 유저입니다"));
+        Webcam webcam = webcamRepository.findById(webcamId).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 webcam 입니다"));
+        List<Optional<MemberWebcam>> memberWebcams = memberWebcamRepository.findByWebcam(webcam);
+        Member remoteMember= null;
+        for (Optional<MemberWebcam> memberWebcam : memberWebcams) {
+            if (memberWebcam.get().getMember() != currentMember) {
+                remoteMember = memberWebcam.get().getMember();
+            }
+        }
+        if (remoteMember == null){
+            throw new IllegalArgumentException("존재하지 않은 유저입니다");
+        }
+        return WebcamResponseDto.GetRemoteMemberDto.builder().memberId(remoteMember.getId()).build();
     }
 }
