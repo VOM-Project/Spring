@@ -88,10 +88,7 @@ public class FcmService {
      */
     private String getAccessToken() throws IOException {
 
-        String firebaseConfigPath = System.getenv("FIREBASE_CONFIG_PATH");
-        if (firebaseConfigPath == null) {
-            firebaseConfigPath = "firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json";
-        }
+        String firebaseConfigPath = "firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
