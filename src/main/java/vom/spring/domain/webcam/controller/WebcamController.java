@@ -24,6 +24,9 @@ import vom.spring.domain.webcam.domain.Message;
 import vom.spring.domain.webcam.dto.WebcamRequestDto;
 import vom.spring.domain.webcam.dto.WebcamResponseDto;
 import vom.spring.domain.webcam.service.WebcamServcie;
+import vom.spring.domain.webpush.service.FcmService;
+
+import java.io.IOException;
 
 @Tag(name = "화상채팅(시그널링) API", description = "유저 API 명세서")
 @RestController
@@ -33,6 +36,7 @@ import vom.spring.domain.webcam.service.WebcamServcie;
 public class WebcamController {
     private final WebcamServcie webcamServcie;
     private final SimpMessagingTemplate messagingTemplate;
+    private final FcmService fcmService;
     /**
      * 방 생성
      */
@@ -45,8 +49,9 @@ public class WebcamController {
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
             })
     @PostMapping("/api/webcam")
-    public ResponseEntity<WebcamResponseDto.CreateWebcamDto> createWebcamRoom(@RequestBody WebcamRequestDto.CreateWebcamDto request) {
+    public ResponseEntity<WebcamResponseDto.CreateWebcamDto> createWebcamRoom(@RequestBody WebcamRequestDto.CreateWebcamDto request) throws IOException {
         WebcamResponseDto.CreateWebcamDto response = webcamServcie.createWebcamRoom(request);
+        fcmService.sendMessageTo(request.getToMemberId());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     /**
