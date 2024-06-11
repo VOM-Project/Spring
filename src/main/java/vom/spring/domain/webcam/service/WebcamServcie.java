@@ -6,4 +6,5 @@ import vom.spring.domain.webcam.dto.WebcamResponseDto;
 public interface WebcamServcie {
     WebcamResponseDto.CreateWebcamDto createWebcamRoom(WebcamRequestDto.CreateWebcamDto request);
     void deleteWebcamRoom(WebcamRequestDto.DeleteWebcamDto request);
+    WebcamResponseDto.GetRemoteMemberDto getRemoteMemberId(Long webcamId);
 }

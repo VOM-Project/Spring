@@ -50,6 +50,24 @@ public class WebcamController {
         fcmService.sendMessageTo(request.getToMemberId());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    /**
+     * 방 입장 후 상대방 memberId 받기
+     */
+    @Operation(summary = "화상채팅 상대방 정보를 조회합니다", description = "상대방의 memberId를 조회합니다",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "화상채팅 방을 생성했습니다."),
+                    @ApiResponse(responseCode = "400", description = "채팅 방을 생성하지 못했습니다.",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                    @ApiResponse(responseCode = "409", description = "올바르지 않은 닉네임, 올바르지 않은 이메일",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            })
+    @GetMapping("/api/webcam/{webcamId}/remote")
+    public ResponseEntity<WebcamResponseDto.GetRemoteMemberDto> getRemoteMember(@PathVariable(value = "webcamId") Long webcamId) {
+        WebcamResponseDto.GetRemoteMemberDto response = webcamServcie.getRemoteMemberId(webcamId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     /**
      * offer 정보를 주고받기 - step 5에서 offer를 받고 구독하고 있는 client들에게 전송
      */

@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface MemberWebcamRepository extends JpaRepository<MemberWebcam, Long> {
     void deleteByWebcam(Webcam webcam);
+    List<Optional<MemberWebcam>> findByWebcam(Webcam webcam);
 }
