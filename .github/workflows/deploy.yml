@@ -55,23 +55,19 @@ jobs:
         oauth2.google.resource-uri: ${{ secrets.RESOURCE_URI }}
         jwt.secret: ${{ secrets.JWT_SECRET }}
     # 2-2) Create Firebase Admin SDK JSON file
-#    - name: Create Firebase Admin SDK JSON file
-#      env:
-#        FIREBASE_ADMIN_SDK: ${{ secrets.FIREBASE_ADMIN_SDK }}
-#      run: |
-#        mkdir -p firebase
-#        echo "$FIREBASE_ADMIN_SDK" > firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json
-#      env:
-#        FIREBASE_CONFIG_PATH: firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json
-    # 3) gradlew 권한 설정     
+    - name: Create Firebase Admin SDK JSON file
+      env:
+        FIREBASE_ADMIN_SDK: ${{ secrets.FIREBASE_ADMIN_SDK }}
+      run: |
+        mkdir -p src/main/firebase/resources/firebase
+        echo "$FIREBASE_ADMIN_SDK" > src/main/firebase/resources/firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json
+    # 3) gradlew 권한 설정
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       # working-directory: ${{ env.working-directory }}
     # 4) test 제외 gradle 빌드
     - name: Build with Gradle
       run: ./gradlew clean build -x test
-#      env:
-#        FIREBASE_CONFIG_PATH: firebase/vomvom-fd09b-firebase-adminsdk-ghtjs-0070b39a4e.json
       # working-directory: ${{ env.working-directory }}
     # 5) AWS 인증
     - name: Configure AWS credentials
