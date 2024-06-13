@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import vom.spring.domain.webpush.domain.Fcm;
 
 @Repository
 public class HomepyRepository {
