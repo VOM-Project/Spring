@@ -29,4 +29,8 @@ public class Fcm {
     @OneToOne
     @JoinColumn(referencedColumnName = "id", name = "member_id", nullable = false)
     private Member member;
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }

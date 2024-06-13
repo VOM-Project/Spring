@@ -39,14 +39,19 @@ public class FcmService {
     public void setFcmToken(String fcmToken, Long member_id) {
 
         Member member = memberRepository.findById(member_id).get();
+        Fcm fcm = fcmRepository.findByMember_id(member_id);
 
-        fcmRepository.save(
-                Fcm.builder()
-                        .createdAt(LocalDateTime.now())
-                        .fcmToken(fcmToken)
-                        .member(member)
-                        .build()
-        );
+        if (fcm == null) {
+            fcmRepository.save(
+                    Fcm.builder()
+                            .createdAt(LocalDateTime.now())
+                            .fcmToken(fcmToken)
+                            .member(member)
+                            .build()
+            );
+        } else {
+            fcm.setFcmToken(fcmToken);
+        }
     }
 
     /**
@@ -61,6 +66,7 @@ public class FcmService {
         if (fcm == null) {
 //            log.error("Fcm token not found for memberId: " + memberId);
 //            throw new IllegalArgumentException("Fcm token not found for memberId: " + memberId);
+            System.out.println("해당 멤버가 알림 설정을 하지 않았습니다.");
             return 0;
         }
 
@@ -118,12 +124,13 @@ public class FcmService {
 
         ObjectMapper om = new ObjectMapper();
 
+        System.out.println(fcm.getFcmToken());
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
                         .token(fcm.getFcmToken())
                         .notification(FcmMessageDto.Notification.builder()
-                                .title("테스트")
-                                .body("테스트입니다용")
+                                .title("화상 채팅 요청!")
+                                .body("짱구 님께서 화상 채팅 요청을 보냈어요. 알림을 클릭하면 방에 입장합니다.")
                                 .image(null)
                                 .build()
                         ).build()).validateOnly(false).build();
