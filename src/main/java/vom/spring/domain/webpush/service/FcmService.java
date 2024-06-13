@@ -129,8 +129,8 @@ public class FcmService {
                 .message(FcmMessageDto.Message.builder()
                         .token(fcm.getFcmToken())
                         .notification(FcmMessageDto.Notification.builder()
-                                .title("화상 채팅 요청!")
-                                .body("짱구 님께서 화상 채팅 요청을 보냈어요. 알림을 클릭하면 방에 입장합니다.")
+                                .title("VOM")
+                                .body("화상 채팅 요청 알림\n클릭하여 접속!")
                                 .image(null)
                                 .build()
                         ).build()).validateOnly(false).build();
