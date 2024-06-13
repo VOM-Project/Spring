@@ -8,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import vom.spring.domain.homepy.Homepy;
+import vom.spring.domain.homepy.HomepyRepository;
 import vom.spring.domain.member.domain.Keyword;
 import vom.spring.domain.member.domain.Member;
 import vom.spring.domain.member.domain.MemberKeyword;
@@ -30,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
     private final RegionRepository regionRepository;
     private final KeywordRepository keywordRepository;
     private final MemberKeywordRepository memberKeywordRepository;
+    private final HomepyRepository homepyRepository;
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -60,7 +63,9 @@ public class MemberServiceImpl implements MemberService {
         }
         // 닉네임, 지역, 생년월일 저장
         member.joinMember(request.getNickname(), request.getBirth(), region);
-
+        //회언가입한 회원 homepy 생성
+        Homepy homepy = Homepy.builder().member(member).build();
+        homepyRepository.save(homepy);
         return MemberResponseDto.CreateDto.builder()
                 .memberId(member.getId())
                 .nickname(memberNickname)
