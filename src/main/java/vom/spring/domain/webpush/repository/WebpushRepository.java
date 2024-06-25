@@ -17,9 +17,9 @@ public class WebpushRepository {
         em.persist(webpush);
     }
 
-    public List<WebpushDto> findFromMemberIdsByToMemberId(Long toMemberId) {
+    public List<WebpushDto> findByToMemberId(Long toMemberId) {
         return em.createQuery(
-                        "select new WebpushDto(w.fromMember.id, w.createdAt) " +
+                        "select new WebpushDto(w.fromMember.id, w.createdAt, w.webcam.id) " +
                                 "from Webpush w where w.toMember.id = :toMemberId",
                         WebpushDto.class)
                 .setParameter("toMemberId", toMemberId)
