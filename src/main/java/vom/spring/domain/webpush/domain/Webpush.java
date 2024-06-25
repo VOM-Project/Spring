@@ -32,7 +32,7 @@ public class Webpush {
     @JoinColumn(referencedColumnName = "id", name = "to_member_id", nullable = false)
     private Member toMember;
 
-//    @OneToOne
-//    @JoinColumn(referencedColumnName = "id", name = "webcam_id", nullable = false)
-//    private Webcam webcam;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "id", name = "webcam_id", nullable = false)
+    private Webcam webcam;
 }
