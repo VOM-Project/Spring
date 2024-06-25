@@ -25,9 +25,8 @@ public class WebpushService {
     /**
      * 웹푸쉬 조회
      */
-    @Transactional
-    public List<WebpushDto> getWebpushes(Long member_id) {
-        return webpushRepository.findFromMemberIdsByToMemberId(member_id);
+    public List<WebpushDto> getWebpushes(Long toMemberId) {
+        return webpushRepository.findByToMemberId(toMemberId);
     }
 
     /**

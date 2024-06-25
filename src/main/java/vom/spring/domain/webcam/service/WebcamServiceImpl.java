@@ -13,6 +13,8 @@ import vom.spring.domain.webcam.dto.WebcamRequestDto;
 import vom.spring.domain.webcam.dto.WebcamResponseDto;
 import vom.spring.domain.webcam.repository.MemberWebcamRepository;
 import vom.spring.domain.webcam.repository.WebcamRepository;
+import vom.spring.domain.webpush.domain.Webpush;
+import vom.spring.domain.webpush.repository.WebpushRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,7 @@ public class WebcamServiceImpl implements WebcamServcie{
     private final WebcamRepository webcamRepository;
     private final MemberRepository memberRepository;
     private final MemberWebcamRepository memberWebcamRepository;
+    private final WebpushRepository webpushRepository;
 
     /**
      * 화상채팅 방 생성
@@ -42,6 +45,13 @@ public class WebcamServiceImpl implements WebcamServcie{
         MemberWebcam toMemberWebcam = MemberWebcam.builder().member(toMember).webcam(newWebcam).build();
         memberWebcamRepository.save(fromMemberWebcam);
         memberWebcamRepository.save(toMemberWebcam);
+        webpushRepository.save(
+                Webpush.builder()
+                        .createdAt(LocalDateTime.now())
+                        .fromMember(fromMember)
+                        .toMember(toMember)
+                        .webcam(newWebcam)
+                        .build());
         return WebcamResponseDto.CreateWebcamDto.builder().webcamId(newWebcam.getId()).build();
     }
 
