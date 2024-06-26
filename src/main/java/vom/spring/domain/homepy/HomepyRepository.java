@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import vom.spring.domain.member.domain.Member;
 
 @Repository
 public class HomepyRepository {
@@ -28,5 +29,4 @@ public class HomepyRepository {
             return null;
         }
     }
-
 }
