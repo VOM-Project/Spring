@@ -87,4 +87,21 @@ public class VomvomController {
         VomvomResponseDto.GetMembersDto getMembersDto = vomvomService.getVomvom();
         return ResponseEntity.status(HttpStatus.OK).body(getMembersDto);
     }
+
+    /**
+     * 봄봄 수 조회
+     */
+//    @Operation(summary = "봄봄 수를 조회합니다", description = "봄봄을 조회합니다",
+//            responses = {
+//                    @ApiResponse(responseCode = "200", description = "화상채팅 방을 생성했습니다."),
+//                    @ApiResponse(responseCode = "400", description = "채팅 방을 생성하지 못했습니다.",
+//                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+//                    @ApiResponse(responseCode = "409", description = "올바르지 않은 닉네임, 올바르지 않은 이메일",
+//                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+//            })
+//    @GetMapping("")
+//    public ResponseEntity<VomvomResponseDto.GetMembersDto> getVomvoms() {
+//        VomvomResponseDto.GetMembersDto getMembersDto = vomvomService.getVomvom();
+//        return ResponseEntity.status(HttpStatus.OK).body(getMembersDto);
+//    }
 }
