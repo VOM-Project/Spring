@@ -69,8 +69,8 @@ public class VomvomServiceImpl implements VomvomService{
     @Override
     public VomvomResponseDto.AcceptVomvomDto acceptRequest (VomvomRequestDto.AcceptVomvomDto request) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName(); //현재 접속 유저 정보 가져오기
-        Member fromMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않은 유저입니다"));
-        Member toMember = memberRepository.findByNickname(request.getNickname()).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 유저입니다"));
+        Member toMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않은 유저입니다"));
+        Member fromMember = memberRepository.findByNickname(request.getNickname()).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 유저입니다"));
         Vomvom vomvom = vomvomRepository.findByFromMemberAndToMember(fromMember, toMember).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 친구 신청입니다"));
         if (vomvom.isVomvom() == false) {
             vomvom.updateIsVomvom();
