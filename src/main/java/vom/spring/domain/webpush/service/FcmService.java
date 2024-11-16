@@ -71,6 +71,7 @@ public class FcmService {
         }
 
         String message = makeMessage(fcm);
+
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -124,16 +125,15 @@ public class FcmService {
 
         ObjectMapper om = new ObjectMapper();
 
-        System.out.println(fcm.getFcmToken());
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
                         .token(fcm.getFcmToken())
                         .notification(FcmMessageDto.Notification.builder()
                                 .title("VOM")
-                                .body("화상 채팅 요청 알림\n클릭하여 접속!")
+                                .body("화상 채팅 요청 알림  클릭하여 접속!")
                                 .image(null)
                                 .build()
-                        ).build()).validateOnly(false).build();
+                        ).build()).build();
 
         return om.writeValueAsString(fcmMessageDto);
     }

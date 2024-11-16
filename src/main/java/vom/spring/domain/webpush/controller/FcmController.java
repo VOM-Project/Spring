@@ -48,4 +48,23 @@ public class FcmController {
 
         return new ResponseEntity<>(arw, HttpStatus.OK);
     }
+
+    // 웹 푸시 메세지 내용 테스트용
+    @PostMapping("/api/v3/fcm/send/{member_id}")
+    public ResponseEntity<ApiResponseWrapper<Object>> sendPushMessage(
+            @PathVariable("member_id") Long memberId
+    ) throws IOException {
+        log.debug("[+] 푸시 메시지를 전송합니다. ");
+
+        int result = fcmService.sendMessageTo(memberId);
+
+        ApiResponseWrapper<Object> arw = ApiResponseWrapper
+                .builder()
+                .result(result)
+                .resultCode(SuccessCode.SELECT_SUCCESS.getStatus())
+                .resultMsg(SuccessCode.SELECT_SUCCESS.getMessage())
+                .build();
+
+        return new ResponseEntity<>(arw, HttpStatus.OK);
+    }
 }
