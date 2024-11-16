@@ -127,7 +127,7 @@ public class FcmService {
                         .notification(FcmMessageDto.Notification.builder()
                                 .title("VOM")
                                 .body("화상 채팅 요청 알림  클릭하여 접속!")
-                                .image(null)
+                                .image("https://cdn-icons-png.flaticon.com/512/1762/1762755.png")
                                 .build()
                         ).build()).build();
 
