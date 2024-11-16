@@ -2,10 +2,7 @@ package vom.spring.domain.webpush.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import vom.spring.domain.webcam.domain.MemberWebcam;
-import vom.spring.domain.webcam.domain.Webcam;
 import vom.spring.domain.webpush.domain.Webpush;
 import vom.spring.domain.webpush.dto.WebpushDto;
 
