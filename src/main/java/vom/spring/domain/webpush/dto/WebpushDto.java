@@ -3,15 +3,16 @@ package vom.spring.domain.webpush.dto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import lombok.Setter;
 
-@Getter
+@Getter @Setter
 public class WebpushDto {
-    private Long fromMemberId;
+    private String fromMemberNickname;
     private LocalDateTime createdAt;
     private Long webcamId;
 
-    public WebpushDto(Long fromMemberId, LocalDateTime createdAt, Long webcamId) {
-        this.fromMemberId = fromMemberId;
+    public WebpushDto(String fromMemberNickname, LocalDateTime createdAt, Long webcamId) {
+        this.fromMemberNickname = fromMemberNickname;
         this.createdAt = createdAt;
         this.webcamId = webcamId;
     }

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FcmMessageDto {
-    private boolean validateOnly;
+
     private FcmMessageDto.Message message;
 
     @Builder

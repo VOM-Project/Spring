@@ -27,22 +27,4 @@ public class WebpushController {
     ) {
         return new ResponseEntity<>(webpushService.getWebpushes(memberId), HttpStatus.OK);
     }
-
-//    @PostMapping("/api/webpush/send")
-//    public String sendNotification(
-//            @RequestBody NotificationRequest request)
-//    {
-//        webpushService.sendNotification(request.getTargetToken(), request.getTitle(), request.getBody());
-//        return "Notification sent successfully!";
-//    }
-//
-//    @Getter
-//    public static class NotificationRequest {
-//        private String targetToken;
-//        private String title;
-//        private String body;
-//
-//        // Getters and Setters
-//    }
-
 }

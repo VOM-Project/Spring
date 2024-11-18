@@ -1,6 +1,7 @@
 package vom.spring.domain.webcam.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import vom.spring.domain.webpush.repository.WebpushRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import vom.spring.domain.webpush.service.WebpushService;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,9 @@ public class WebcamServiceImpl implements WebcamServcie{
     private final MemberRepository memberRepository;
     private final MemberWebcamRepository memberWebcamRepository;
     private final WebpushRepository webpushRepository;
+
+    @Autowired
+    private WebpushService webpushService;
 
     /**
      * 화상채팅 방 생성
@@ -45,13 +50,7 @@ public class WebcamServiceImpl implements WebcamServcie{
         MemberWebcam toMemberWebcam = MemberWebcam.builder().member(toMember).webcam(newWebcam).build();
         memberWebcamRepository.save(fromMemberWebcam);
         memberWebcamRepository.save(toMemberWebcam);
-        webpushRepository.save(
-                Webpush.builder()
-                        .createdAt(LocalDateTime.now())
-                        .fromMember(fromMember)
-                        .toMember(toMember)
-                        .webcam(newWebcam)
-                        .build());
+        webpushService.createWebpush(fromMember, toMember, newWebcam);
         return WebcamResponseDto.CreateWebcamDto.builder().webcamId(newWebcam.getId()).build();
     }
 
@@ -65,6 +64,8 @@ public class WebcamServiceImpl implements WebcamServcie{
         Member fromMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않은 유저입니다"));
         //해당 방 찾기
         Webcam webcam = webcamRepository.findById(request.getRoomId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 방입니다"));
+        //해당 방 관련 웹 푸시 알림 삭제
+        webpushService.deleteWebpushByWebcamId(webcam.getId());
         //해당 방 관련 연관관계 삭제
         memberWebcamRepository.deleteByWebcam(webcam);
         //해당 방 삭제

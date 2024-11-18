@@ -3,9 +3,11 @@ package vom.spring.domain.webpush.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,48 +57,42 @@ public class FcmService {
     }
 
     /**
-     * 푸시 메시지 처리를 수행하는 비즈니스 로직
+     * 푸시 메시지 전송
      *
      * @return 성공(1), 실패(0)
      */
     public int sendMessageTo(Long memberId) throws IOException {
-
-        Fcm fcm = fcmRepository.findByMember_id(memberId);
-
-        if (fcm == null) {
-//            log.error("Fcm token not found for memberId: " + memberId);
-//            throw new IllegalArgumentException("Fcm token not found for memberId: " + memberId);
-            System.out.println("해당 멤버가 알림 설정을 하지 않았습니다.");
-            return 0;
-        }
-
-        String message = makeMessage(fcm);
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + getAccessToken());
-
-        HttpEntity entity = new HttpEntity<>(message, headers);
-
-        String API_URL = "https://fcm.googleapis.com/v1/projects/vomvom-fd09b/messages:send";
-//        String API_URL = "https://fcm.googleapis.com/fcm/send";
-        ResponseEntity<String> response = null;
-
         try {
-            response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
-            System.out.println(response.getStatusCode());
+            Fcm fcm = fcmRepository.findByMember_id(memberId);
+
+            if (fcm == null) {
+                throw new NoSuchElementException("해당 멤버가 알림 설정을 하지 않았습니다.");
+            }
+
+            String message = makeMessage(fcm);
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", "Bearer " + getAccessToken());
+
+            HttpEntity entity = new HttpEntity<>(message, headers);
+
+            String API_URL = "https://fcm.googleapis.com/v1/projects/vomvom-fd09b/messages:send";
+
+            ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
+            System.out.println("Response: " + response.getBody());
+            System.out.println("Status Code: " + response.getStatusCode());
             return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
         } catch (Exception e) {
-            log.error("[-] FCM 전송 오류 :: " + e.getMessage());
+            System.err.println("[-] FCM 전송 오류 :: " + e.getMessage());
             return 0;
         }
     }
 
     /**
-     * Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰을 발급 받습니다.
-     *
-     * playground에서 발급받은 토큰
+     * Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰 발급
      *
      * @return Bearer token
      */
@@ -106,7 +102,8 @@ public class FcmService {
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase.messaging"));
+                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform",
+                        "https://www.googleapis.com/auth/firebase.messaging"));
 
         googleCredentials.refreshIfExpired();
 
@@ -116,7 +113,7 @@ public class FcmService {
     }
 
     /**
-     * FCM 전송 정보를 기반으로 메시지를 구성합니다.
+     * FCM 내용 생성
      *
      * @return String
      */
@@ -124,16 +121,15 @@ public class FcmService {
 
         ObjectMapper om = new ObjectMapper();
 
-        System.out.println(fcm.getFcmToken());
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
                         .token(fcm.getFcmToken())
                         .notification(FcmMessageDto.Notification.builder()
                                 .title("VOM")
-                                .body("화상 채팅 요청 알림\n클릭하여 접속!")
-                                .image(null)
+                                .body("화상 채팅 요청 알림  클릭하여 접속!")
+                                .image("https://cdn-icons-png.flaticon.com/512/1762/1762755.png")
                                 .build()
-                        ).build()).validateOnly(false).build();
+                        ).build()).build();
 
         return om.writeValueAsString(fcmMessageDto);
     }

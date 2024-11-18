@@ -19,10 +19,25 @@ public class WebpushRepository {
 
     public List<WebpushDto> findByToMemberId(Long toMemberId) {
         return em.createQuery(
-                        "select new WebpushDto(w.fromMember.id, w.createdAt, w.webcam.id) " +
+                        "select new WebpushDto(w.fromMember.nickname, w.createdAt, w.webcam.id) " +
                                 "from Webpush w where w.toMember.id = :toMemberId",
                         WebpushDto.class)
                 .setParameter("toMemberId", toMemberId)
                 .getResultList();
+    }
+
+    public Webpush findByWebcamId(Long webcamId) {
+        return em.createQuery("SELECT w FROM Webpush w WHERE w.webcam.id = :webcamId", Webpush.class)
+                .setParameter("webcamId", webcamId)
+                .getSingleResult();
+    }
+
+    public void delete(Webpush webpush) {
+        if (em.contains(webpush)) {
+            em.remove(webpush);
+        } else {
+            Webpush mergedWebpush = em.merge(webpush); // 비영속 상태라면 병합 후 삭제
+            em.remove(mergedWebpush);
+        }
     }
 }

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import vom.spring.domain.member.domain.Member;
-import vom.spring.domain.webcam.domain.Status;
 import vom.spring.domain.webcam.domain.Webcam;
 
 import java.time.LocalDateTime;
