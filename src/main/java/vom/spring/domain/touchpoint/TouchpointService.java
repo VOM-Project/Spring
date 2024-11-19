@@ -1,5 +1,6 @@
 package vom.spring.domain.touchpoint;
 
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +27,8 @@ public class TouchpointService {
      */
     @Transactional
     public List<TouchpointDto> getTouchpoints(Long member_id) {
-//        Member member = memberRepository.findById(member_id).get();
-        return touchpointRepository.findFromMemberIdsByToMemberId(member_id);
+        LocalDate today = LocalDate.now();
+        return touchpointRepository.findFromMemberIdsByToMemberId(member_id, today);
     }
 
     /**
