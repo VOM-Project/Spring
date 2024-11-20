@@ -28,7 +28,7 @@ public class TouchpointService {
     @Transactional
     public List<TouchpointDto> getTouchpoints(Long member_id) {
         LocalDate today = LocalDate.now();
-        return touchpointRepository.findFromMemberIdsByToMemberId(member_id, today);
+        return touchpointRepository.findByToMemberId(member_id, today);
     }
 
     /**

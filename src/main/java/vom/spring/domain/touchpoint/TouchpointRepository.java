@@ -23,9 +23,9 @@ public class TouchpointRepository {
         em.persist(touchpoint);
     }
 
-    public List<TouchpointDto> findFromMemberIdsByToMemberId(Long toMemberId, LocalDate today) {
+    public List<TouchpointDto> findByToMemberId(Long toMemberId, LocalDate today) {
         return em.createQuery(
-                        "select new TouchpointDto(t.fromMember.id, t.createdAt, t.fromMember.profileImgUrl) " +
+                        "select new TouchpointDto(t.fromMember.nickname, t.createdAt, t.fromMember.profileImgUrl) " +
                                 "from Touchpoint t " +
                                 "where t.toMember.id = :toMemberId " +
                                 "and t.createdAt < :today",
