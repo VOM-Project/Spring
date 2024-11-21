@@ -3,6 +3,7 @@ package vom.spring.domain.touchpoint;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import java.time.LocalDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,12 +23,15 @@ public class TouchpointRepository {
         em.persist(touchpoint);
     }
 
-    public List<TouchpointDto> findFromMemberIdsByToMemberId(Long toMemberId) {
+    public List<TouchpointDto> findByToMemberId(Long toMemberId, LocalDate today) {
         return em.createQuery(
-                        "select new TouchpointDto(t.fromMember.id, t.createdAt, t.fromMember.profileImgUrl) " +
-                                "from Touchpoint t where t.toMember.id = :toMemberId",
+                        "select new TouchpointDto(t.fromMember.nickname, t.createdAt, t.fromMember.profileImgUrl) " +
+                                "from Touchpoint t " +
+                                "where t.toMember.id = :toMemberId " +
+                                "and t.createdAt < :today",
                         TouchpointDto.class)
                 .setParameter("toMemberId", toMemberId)
+                .setParameter("today", today.atStartOfDay())
                 .getResultList();
     }
 
