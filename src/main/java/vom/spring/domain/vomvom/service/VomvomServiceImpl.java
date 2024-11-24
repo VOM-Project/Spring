@@ -74,6 +74,8 @@ public class VomvomServiceImpl implements VomvomService{
         Vomvom vomvom = vomvomRepository.findByFromMemberAndToMember(fromMember, toMember).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 친구 신청입니다"));
         if (vomvom.isVomvom() == false) {
             vomvom.updateIsVomvom();
+            toMember.updateVomVomCount();
+            fromMember.updateVomVomCount();
         }
         return VomvomResponseDto.AcceptVomvomDto.builder()
                 .isVomvom(vomvom.isVomvom())
