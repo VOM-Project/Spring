@@ -68,4 +68,8 @@ public class Member {
         this.profileImgName = profileImgName;
         this.profileImgUrl = profileImgUrl;
     }
+
+    public void updateVomVomCount(){
+        this.vomVomCount++;
+    }
 }
